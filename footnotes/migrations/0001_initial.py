@@ -12,17 +12,39 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('wagtailcore', '0041_group_collection_permissions_verbose_name_plural'),
+        ("wagtailcore", "0041_group_collection_permissions_verbose_name_plural")
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Footnote',
+            name="Footnote",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', projectname.footnotes.fields.CustomUUIDField(help_text='The ID of the footnote is shown in the rich text editor for reference.', unique=True, verbose_name='ID')),
-                ('text', wagtail.core.fields.RichTextField()),
-                ('page', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='footnotes', to='wagtailcore.Page')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    projectname.footnotes.fields.CustomUUIDField(
+                        help_text="The ID of the footnote is shown in the rich text editor for reference.",
+                        unique=True,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("text", wagtail.core.fields.RichTextField()),
+                (
+                    "page",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="footnotes",
+                        to="wagtailcore.Page",
+                    ),
+                ),
             ],
-        ),
+        )
     ]

@@ -1,7 +1,6 @@
 import re
 
 from django.core.exceptions import ValidationError
-
 from wagtail.core.blocks import RichTextBlock
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')

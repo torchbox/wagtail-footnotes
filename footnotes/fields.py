@@ -1,4 +1,4 @@
-from django.db.models import FileField, UUIDField
+from django.db.models import UUIDField
 
 
 class CustomUUIDField(UUIDField):

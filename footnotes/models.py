@@ -1,7 +1,5 @@
 from django.db import models
-
 from modelcluster.fields import ParentalKey
-
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
 from wagtail.core.fields import RichTextField
 
@@ -16,26 +14,20 @@ class Footnote(models.Model):
     footnote in the rich text of the page.
     """
 
-    page = ParentalKey('wagtailcore.Page', related_name='footnotes')
+    page = ParentalKey("wagtailcore.Page", related_name="footnotes")
     uuid = CustomUUIDField(
         unique=True,
-        verbose_name='ID',
+        verbose_name="ID",
         help_text="The ID of the footnote is shown in the rich text editor for "
-                  "reference."
+        "reference.",
     )
-    text = RichTextField(features=['bold', 'italic', 'link'])
+    text = RichTextField(features=["bold", "italic", "link"])
 
-    panels = [
-        FieldPanel('text'),
-        FieldPanel('uuid', widget=ReadonlyUUIDInput),
-    ]
+    panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
 
 
 class FootnotesMixin(object):
-
     class Meta:
         abstract = True
 
-    footnote_panels = [
-        InlinePanel('footnotes', label="Footnotes")
-    ]
+    footnote_panels = [InlinePanel("footnotes", label="Footnotes")]

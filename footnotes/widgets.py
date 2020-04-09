@@ -1,5 +1,4 @@
 from django.forms import HiddenInput
-
 from wagtail.utils.widgets import WidgetWithScript
 
 
@@ -14,7 +13,8 @@ class ReadonlyUUIDInput(WidgetWithScript, HiddenInput):
         """ Includes uuidv4() function courtesy of
         https://stackoverflow.com/a/2117523/823020
         """
-        js = ('footnotes/js/footnotes.js',)
+
+        js = ("footnotes/js/footnotes.js",)
 
     def render_html(self, name, value, attrs):
         """Render the HTML (non-JS) portion of the field markup"""
