@@ -54,6 +54,10 @@ This repo contains example code that can be copied and altered to add footnotes 
    ./manage.py migrate
    ```
 
+## Example implementations
+ - Merge Request: https://git.torchbox.com/wharton/whartoninteractive/-/merge_requests/195
+    - Initial commit: https://git.torchbox.com/wharton/whartoninteractive/-/commit/d368d59d34743dd6164b54c83b86d2e1f3bb8e62
+
 ## Common issues
  - I click on the `Fn` button in the editor and it stops working
     - This is likely because the URL in the JS does not mathc the URL of the footnotes view. Check the URL in `projectname/footnotes/static/footnotes/js/footnotes.js` matches the URL you set.
