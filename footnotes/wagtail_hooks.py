@@ -1,10 +1,10 @@
-from django.templatetags.static import static
-from django.utils.html import format_html, format_html_join
-
 import wagtail.admin.rich_text.editors.draftail.features as draftail_features
+from django.templatetags.static import static
+from django.utils.html import format_html_join
 from draftjs_exporter.dom import DOM
-from wagtail.admin.rich_text.converters.html_to_contentstate import \
-    InlineEntityElementHandler
+from wagtail.admin.rich_text.converters.html_to_contentstate import (
+    InlineEntityElementHandler,
+)
 from wagtail.core import hooks
 
 
@@ -15,11 +15,13 @@ def editor_js():
     """
     js_files = [
         # We require this file here to make sure it is loaded before footnotes.js.
-        'wagtailadmin/js/draftail.js',
+        "wagtailadmin/js/draftail.js",
         "footnotes/js/footnotes.js",
     ]
-    js_includes = format_html_join('\n', '<script src="{0}"></script>',
-        ((static(filename),) for filename in js_files)
+    js_includes = format_html_join(
+        "\n",
+        '<script src="{0}"></script>',
+        ((static(filename),) for filename in js_files),
     )
     return js_includes
 
