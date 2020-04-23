@@ -1,8 +1,27 @@
+from django.templatetags.static import static
+from django.utils.html import format_html, format_html_join
+
 import wagtail.admin.rich_text.editors.draftail.features as draftail_features
 from draftjs_exporter.dom import DOM
 from wagtail.admin.rich_text.converters.html_to_contentstate import \
     InlineEntityElementHandler
 from wagtail.core import hooks
+
+
+@hooks.register("insert_editor_js")
+def editor_js():
+    """ Includes uuidv4() function courtesy of
+    https://stackoverflow.com/a/2117523/823020
+    """
+    js_files = [
+        # We require this file here to make sure it is loaded before footnotes.js.
+        'wagtailadmin/js/draftail.js',
+        "footnotes/js/footnotes.js",
+    ]
+    js_includes = format_html_join('\n', '<script src="{0}"></script>',
+        ((static(filename),) for filename in js_files)
+    )
+    return js_includes
 
 
 @hooks.register("register_rich_text_features")
@@ -11,11 +30,6 @@ def register_footnotes_feature(features):
     Registering the `footnotes` feature, which uses the `FOOTNOTES` Draft.js
     entity type, and is stored as HTML with a
     `<footnotes id="">short-id</footnotes>` tag.
-
-    The JS for the draftail editor plugin is in the `footnotes.js` file and is
-    brought in through ReadonlyUUIDInput's media to ensure it appears after the
-    core Draftail JS. This is due to Django bug:
-    https://code.djangoproject.com/ticket/30179
     """
     feature_name = "footnotes"
     type_ = "FOOTNOTES"

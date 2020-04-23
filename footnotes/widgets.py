@@ -9,13 +9,6 @@ class ReadonlyUUIDInput(WidgetWithScript, HiddenInput):
     the user can't easily change it.
     """
 
-    class Media:
-        """ Includes uuidv4() function courtesy of
-        https://stackoverflow.com/a/2117523/823020
-        """
-
-        js = ("footnotes/js/footnotes.js",)
-
     def render_html(self, name, value, attrs):
         """Render the HTML (non-JS) portion of the field markup"""
         hidden = super(WidgetWithScript, self).render(name, value, attrs)

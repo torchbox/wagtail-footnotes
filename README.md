@@ -29,7 +29,7 @@ This repo contains example code that can be copied and altered to add footnotes 
  - Update your page models to use the `FootnotesMixin`:
    ```python
    from projectname.footnotes.models import FootnotesMixin
-   class InformationPageRelatedPage(RelatedPage, FootnotesMixin):
+   class InformationPage(FootnotesMixin, BasePage):
         ...
         content_panels = BasePage.content_panels + [
             ...
