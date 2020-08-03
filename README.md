@@ -14,7 +14,7 @@ This repo contains example code that can be copied and altered to add footnotes 
  - Add the footnotes `urls.py` to your project's `urls.py`:
    ```python
    from wagtail_footnotes import urls as footnotes_urls
-   private_urlpatterns = [
+   urlpatterns = [
        ...
        path("footnotes/", include(footnotes_urls)),
        ...
@@ -24,9 +24,9 @@ This repo contains example code that can be copied and altered to add footnotes 
  - Update your page models to use the `FootnotesMixin`:
    ```python
    from wagtail_footnotes.models import FootnotesMixin
-   class InformationPage(FootnotesMixin, BasePage):
+   class InformationPage(BasePage, FootnotesMixin):
         ...
-        content_panels = BasePage.content_panels + [
+        content_panels = [
             ...
         ] + FootnotesMixin.footnote_panels
    ```
@@ -35,12 +35,12 @@ This repo contains example code that can be copied and altered to add footnotes 
     - You will also need to change them from `RichTextBlock`s to `wagtail_footnotes.blocks.RichTextBlockWithFootnotes`
     - You can add the footnotes to `RichTextBlock`s across the project by updating `WAGTAILADMIN_RICH_TEXT_EDITORS["default"]["OPTIONS"]["features"]`:
       ```python
-       WAGTAILADMIN_RICH_TEXT_EDITORS = {
-            "default": {
-                "WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea",
-                "OPTIONS": {"features": ["bold", "italic", "h3", "h4", "ol", "ul", "link", "footnotes"]},
-            }
-        }
+      WAGTAILADMIN_RICH_TEXT_EDITORS = {
+          "default": {
+              "WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea",
+              "OPTIONS": {"features": ["bold", "italic", "h3", "h4", "ol", "ul", "link", "footnotes"]},
+          }
+      }
       ```
  - Update your page templates to include `{% include "footnotes/includes/footnotes.html" %}`
  - Make and run migrations:
