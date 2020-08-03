@@ -31,8 +31,9 @@ class RichTextBlockWithFootnotes(RichTextBlock):
     def process_footnote(self, footnote_id, context):
         footnotes = self.get_footnotes(context["page"])
         footnote = context["page"].footnotes.get(uuid=footnote_id)
-        footnotes.append(footnote)
-        return len(footnotes)
+        if footnote not in footnotes:
+            footnotes.append(footnote)
+        return footnotes.index(footnote) + 1
 
     def get_footnotes(self, page):
         if not hasattr(page, "footnotes_list"):
