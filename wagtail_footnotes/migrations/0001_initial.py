@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import modelcluster.fields
-import projectname.footnotes.fields
+import wagtail_footnotes.fields
 import wagtail.core.fields
 
 
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "uuid",
-                    projectname.footnotes.fields.CustomUUIDField(
+                    wagtail_footnotes.fields.CustomUUIDField(
                         help_text="The ID of the footnote is shown in the rich text editor for reference.",
                         unique=True,
                         verbose_name="ID",
