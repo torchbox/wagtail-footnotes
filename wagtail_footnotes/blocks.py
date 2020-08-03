@@ -1,6 +1,7 @@
 import re
 
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 from wagtail.core.blocks import RichTextBlock
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
@@ -25,8 +26,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
                 return ""
             else:
                 return f'<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
-
-        return FIND_FOOTNOTE_TAG.sub(replace_tag, html)
+        return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))
 
     def process_footnote(self, footnote_id, page):
         footnotes = self.get_footnotes(page)
