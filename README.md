@@ -1,6 +1,6 @@
 # Wagtail Footnotes
 
-This repo contains example code that can be copied and altered to add footnotes to your wagtail pages.
+Add footnotes functionality to you Wagtail project.
 
 ## Usage
  - Add the app to `INSTALLED_APPS`:
