@@ -42,7 +42,7 @@ This repo contains example code that can be copied and altered to add footnotes 
           }
       }
       ```
- - Update your page templates to include `{% include "footnotes/includes/footnotes.html" %}`
+ - Update your page templates to include `{% include "wagtail_footnotes/includes/footnotes.html" %}`
  - Make and run migrations:
    ```
    ./manage.py makemigrations
