@@ -24,10 +24,3 @@ class Footnote(models.Model):
     text = RichTextField(features=["bold", "italic", "link"])
 
     panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
-
-
-class FootnotesMixin(object):
-    class Meta:
-        abstract = True
-
-    footnote_panels = [InlinePanel("footnotes", label="Footnotes")]

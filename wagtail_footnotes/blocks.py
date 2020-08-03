@@ -20,7 +20,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
 
         def replace_tag(match):
             try:
-                index = self.process_footnote(match.group(1), context)
+                index = self.process_footnote(match.group(1), context["page"])
             except (KeyError, ValidationError):
                 return ""
             else:
@@ -28,9 +28,9 @@ class RichTextBlockWithFootnotes(RichTextBlock):
 
         return FIND_FOOTNOTE_TAG.sub(replace_tag, html)
 
-    def process_footnote(self, footnote_id, context):
-        footnotes = self.get_footnotes(context["page"])
-        footnote = context["page"].footnotes.get(uuid=footnote_id)
+    def process_footnote(self, footnote_id, page):
+        footnotes = self.get_footnotes(page)
+        footnote = page.footnotes.get(uuid=footnote_id)
         if footnote not in footnotes:
             footnotes.append(footnote)
         return footnotes.index(footnote) + 1

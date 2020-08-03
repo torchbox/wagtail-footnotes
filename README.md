@@ -21,14 +21,14 @@ This repo contains example code that can be copied and altered to add footnotes 
    ]
    ```
    Note: The URL NEEDS to be defined as above as it is currently hardcoded in the JS
- - Update your page models to use the `FootnotesMixin`:
+ - Update your page models to show the footnotes field:
    ```python
-   from wagtail_footnotes.models import FootnotesMixin
-   class InformationPage(BasePage, FootnotesMixin):
+   class InformationPage(BasePage):
         ...
         content_panels = [
             ...
-        ] + FootnotesMixin.footnote_panels
+            InlinePanel("footnotes", label="Footnotes"),
+        ]
    ```
  - Update your `RichTextBlock`s 
     - Add `"footnotes"` to the `features` arg for each `RichTextBlock` that you want to have this functionality.
