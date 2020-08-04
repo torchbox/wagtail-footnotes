@@ -1,6 +1,6 @@
 # Wagtail Footnotes
 
-Add footnotes functionality to you Wagtail project.
+Add footnotes functionality to your Wagtail project.
 
 ## Usage
  - Add the app to `INSTALLED_APPS`:
@@ -20,7 +20,7 @@ Add footnotes functionality to you Wagtail project.
        ...
    ]
    ```
-   Note: The URL NEEDS to be defined as above as it is currently hardcoded in the JS
+   Note: The URL has to be defined as above as it is currently hardcoded in the Javascript.
  - Update your page models to show the footnotes field:
    ```python
    class InformationPage(BasePage):
@@ -31,8 +31,8 @@ Add footnotes functionality to you Wagtail project.
         ]
    ```
  - Update your `RichTextBlock`s 
-    - Add `"footnotes"` to the `features` arg for each `RichTextBlock` that you want to have this functionality.
-    - You will also need to change them from `RichTextBlock`s to `wagtail_footnotes.blocks.RichTextBlockWithFootnotes`
+    - Add `"footnotes"` to the `features` arg for each `RichTextBlock` that you want to have this functionality
+    - You will also need to change any `RichTextBlock`s to `wagtail_footnotes.blocks.RichTextBlockWithFootnotes`
     - You can add the footnotes to `RichTextBlock`s across the project by updating `WAGTAILADMIN_RICH_TEXT_EDITORS["default"]["OPTIONS"]["features"]`:
       ```python
       WAGTAILADMIN_RICH_TEXT_EDITORS = {
