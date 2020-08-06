@@ -11,8 +11,8 @@ class RichTextBlockWithFootnotes(RichTextBlock):
     """
     Rich Text block that renders footnotes in the format
     '<footnote id="long-id">short-id</footnote>' as anchor elements. It also
-    adds the Footnote object to the 'request' object for later use. It uses
-    'request' because variables added to 'context' do not persist into the
+    adds the Footnote object to the 'page' object for later use. It uses
+    'page' because variables added to 'context' do not persist into the
     final template context.
     """
 
