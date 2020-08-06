@@ -17,13 +17,22 @@ class RichTextBlockWithFootnotes(RichTextBlock):
     """
 
     def replace_footnote_tags(self, html, context=None):
+        if "page" not in context:
+            return html
+
+        page = context["page"]
+        if not hasattr(page, "footnotes_list"):
+            page.footnotes_list = []
+        self.footnotes = {footnote.uuid: footnote for footnote in page.footnotes.all()}
+
         def replace_tag(match):
             try:
-                index = self.process_footnote(match.group(1), context["page"])
+                index = self.process_footnote(match.group(1), page)
             except (KeyError, ValidationError):
                 return ""
             else:
                 return f'<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
+
         return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))
 
     def render(self, value, context=None):
@@ -39,13 +48,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         return self.replace_footnote_tags(html, context=context)
 
     def process_footnote(self, footnote_id, page):
-        footnotes = self.get_footnotes(page)
-        footnote = page.footnotes.get(uuid=footnote_id)
-        if footnote not in footnotes:
-            footnotes.append(footnote)
-        return footnotes.index(footnote) + 1
-
-    def get_footnotes(self, page):
-        if not hasattr(page, "footnotes_list"):
-            page.footnotes_list = []
-        return page.footnotes_list
+        footnote = self.footnotes[footnote_id]
+        if footnote not in page.footnotes_list:
+            page.footnotes_list.append(footnote)
+        return page.footnotes_list.index(footnote) + 1
