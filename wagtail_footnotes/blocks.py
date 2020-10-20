@@ -16,9 +16,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
     final template context.
     """
 
-    def render_basic(self, value, context=None):
-        html = super().render_basic(value, context)
-
+    def replace_footnote_tags(self, html, context=None):
         def replace_tag(match):
             try:
                 index = self.process_footnote(match.group(1), context["page"])
@@ -27,6 +25,18 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             else:
                 return f'<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
         return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))
+
+    def render(self, value, context=None):
+        if not self.get_template(context=context):
+            return self.render_basic(value, context=context)
+
+        html = super().render(value, context=context)
+        return self.replace_footnote_tags(html, context=context)
+
+    def render_basic(self, value, context=None):
+        html = super().render_basic(value, context)
+
+        return self.replace_footnote_tags(html, context=context)
 
     def process_footnote(self, footnote_id, page):
         footnotes = self.get_footnotes(page)
