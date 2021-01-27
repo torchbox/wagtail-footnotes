@@ -8,24 +8,6 @@ from wagtail.admin.rich_text.converters.html_to_contentstate import (
 from wagtail.core import hooks
 
 
-@hooks.register("insert_editor_js")
-def editor_js():
-    """ Includes uuidv4() function courtesy of
-    https://stackoverflow.com/a/2117523/823020
-    """
-    js_files = [
-        # We require this file here to make sure it is loaded before footnotes.js.
-        "wagtailadmin/js/draftail.js",
-        "footnotes/js/footnotes.js",
-    ]
-    js_includes = format_html_join(
-        "\n",
-        '<script src="{0}"></script>',
-        ((static(filename),) for filename in js_files),
-    )
-    return js_includes
-
-
 @hooks.register("register_rich_text_features")
 def register_footnotes_feature(features):
     """
@@ -43,7 +25,7 @@ def register_footnotes_feature(features):
         feature_name,
         draftail_features.EntityFeature(
             control,
-            # The JS for footnotes would have been passed here, see above.
+            js = ['wagtailadmin/js/draftail.js', 'footnotes/js/footnotes.js']
         ),
     )
 
