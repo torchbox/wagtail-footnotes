@@ -17,10 +17,15 @@ class RichTextBlockWithFootnotes(RichTextBlock):
     """
 
     def replace_footnote_tags(self, html, context=None):
-        if "page" not in context:
+        if context is None:
+            new_context = self.get_context(value)
+        else:
+            new_context = self.get_context(value, parent_context=dict(context))
+
+        if "page" not in new_context:
             return html
 
-        page = context["page"]
+        page = new_context["page"]
         if not hasattr(page, "footnotes_list"):
             page.footnotes_list = []
         self.footnotes = {footnote.uuid: footnote for footnote in page.footnotes.all()}
@@ -51,4 +56,5 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         footnote = self.footnotes[footnote_id]
         if footnote not in page.footnotes_list:
             page.footnotes_list.append(footnote)
+        # Add 1 to the index as footnotes are indexed starting at 1 not 0.
         return page.footnotes_list.index(footnote) + 1
