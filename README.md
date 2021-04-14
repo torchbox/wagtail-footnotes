@@ -49,6 +49,12 @@ Add footnotes functionality to your Wagtail project.
    ./manage.py migrate
    ```
 
+## Settings
+
+ - `WAGTAIL_FOOTNOTES_TEXT_FEATURES`
+   - Default: `["bold", "italic", "link"]`
+   - Use this to update a list of Rich Text features allowed in the footnote text.
+
 ## Common issues
  - I click on the `Fn` button in the editor and it stops working
     - This is likely because the URL in the JS does not match the URL of the footnotes view. Check the URL in `wagtail_footnotes/static/footnotes/js/footnotes.js` matches the URL you set.
