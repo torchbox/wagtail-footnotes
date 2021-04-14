@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
@@ -21,6 +22,12 @@ class Footnote(models.Model):
         help_text="The ID of the footnote is shown in the rich text editor for "
         "reference.",
     )
-    text = RichTextField(features=["bold", "italic", "link"])
+    text = RichTextField(
+        features=getattr(
+            settings, 
+            'WAGTAIL_FOOTNOTES_TEXT_FEATURES', 
+            ["bold", "italic", "link"]
+        )
+    )
 
     panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
