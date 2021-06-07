@@ -2,7 +2,10 @@
 
 ## Unreleased
 
+## 0.6.0
+
 - Add `WAGTAIL_FOOTNOTES_TEXT_FEATURES` to add custom rich text features to footnote content
+- Update requrements to `Django>=2.2, <3.3`
 
 ## 0.5.0
 
