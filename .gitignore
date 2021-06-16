@@ -4,3 +4,5 @@ __pycache__
 dist/
 build/
 wagtail_footnotes.egg-info/
+
+db.sqlite3

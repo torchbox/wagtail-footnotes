@@ -12,10 +12,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "wagtail.documents",
+    "wagtail.images",
     "wagtail.users",
     "wagtail.core",
+    "wagtail.admin",
+    "taggit",
     # "wagtail.contrib.frontend_cache",
     "wagtail_footnotes",
+    "wagtail_footnotes_test_app",
 ]
 
 TEMPLATES = [
@@ -39,7 +44,7 @@ MEDIA_ROOT = os.path.join(TESTS_PATH, "media")
 
 STATIC_ROOT = os.path.join(TESTS_PATH, "static")
 
-ROOT_URLCONF = "wagtail_footnotes.tests.urls"
+ROOT_URLCONF = "wagtail_footnotes_test_app.urls"
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
