@@ -1,5 +1,6 @@
 __pycache__
 
+.tox/
 dist/
 build/
 wagtail_footnotes.egg-info/
