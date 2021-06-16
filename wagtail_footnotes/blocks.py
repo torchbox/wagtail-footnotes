@@ -16,6 +16,10 @@ class RichTextBlockWithFootnotes(RichTextBlock):
     final template context.
     """
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.features += "footnotes"
+
     def replace_footnote_tags(self, html, context=None):
         if context is None:
             new_context = self.get_context(value)
