@@ -23,4 +23,7 @@ class TestPage(wagtail_factories.PageFactory):
         model = models.TestPage
 
     title = factory.Faker("text", max_nb_chars=25)
-    body = wagtail_factories.StreamFieldFactory(CustomBlock)
+    body = wagtail_factories.StreamFieldFactory(
+        # TODO: I really want to use CustomBlock here so I don't have to redefine the structure.
+        {"paragraph": RichTextBlockWithFootnotes}
+    )
