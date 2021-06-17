@@ -42,3 +42,37 @@ class Footnotes(TestCase):
         self.assertContains(response, 'id="footnote-source-1"')
         # Check for the footnote list
         self.assertContains(response, footnote.text)
+
+    def test_create_page_with_footnotes(self):
+        footnote1 = factories.Footnote()
+        footnote2 = factories.Footnote()
+        footnote3 = factories.Footnote()
+        # Build a page with footnotes
+        rich_text = RichText(
+            f"{create_footnote_tag(footnote1.uuid)}"
+            f"{create_footnote_tag(footnote2.uuid)}"
+            f"{create_footnote_tag(footnote3.uuid)}"
+        )
+        page = factories.TestPage(
+            parent=self.root_page,
+            body__0__paragraph__value=rich_text,
+        )
+        footnote1.page = page
+        footnote1.save()
+        footnote2.page = page
+        footnote2.save()
+        footnote3.page = page
+        footnote3.save()
+        # Render the page
+        response = self.client.get(page.url)
+        # Test the response
+        self.assertEquals(response.status_code, 200)
+        # Check for the footnote
+        self.assertContains(response, 'id="footnote-source-1"')
+        self.assertContains(response, 'id="footnote-source-2"')
+        self.assertContains(response, 'id="footnote-source-3"')
+        # Check for the footnote list
+        self.assertContains(response, footnote1.text)
+        self.assertContains(response, footnote2.text)
+        self.assertContains(response, footnote3.text)
+        # TODO: Check order of footnotes in list matches order in rich_text
