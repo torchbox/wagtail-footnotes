@@ -1,12 +1,26 @@
 import factory
 import wagtail_factories
-from faker import Factory as FakerFactory
 
-from .models import TestPage
+from . import models
+from . import blocks
+from wagtail_footnotes import blocks as wf_blocks
+
+
+class RichTextBlockWithFootnotes(wagtail_factories.blocks.BlockFactory):
+    class Meta:
+        model = wf_blocks.RichTextBlockWithFootnotes
+
+
+class CustomBlock(wagtail_factories.StructBlockFactory):
+    paragraph = factory.SubFactory(RichTextBlockWithFootnotes)
+
+    class Meta:
+        model = blocks.CustomBlock
 
 
 class TestPage(wagtail_factories.PageFactory):
     class Meta:
-        model = TestPage
+        model = models.TestPage
 
     title = factory.Faker("text", max_nb_chars=25)
+    body = wagtail_factories.StreamFieldFactory(CustomBlock)
