@@ -19,5 +19,4 @@ jobs:
       - name: Install Tox and any other packages
         run: pip install -r dev-requirements.txt
       - name: Run Tox
-        # Run tox using the version of Python in `PATH`
         run: tox
