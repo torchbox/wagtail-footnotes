@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('wagtailcore', '0062_comment_models_and_pagesubscription'),
+        ('wagtailcore', '0045_assign_unlock_grouppagepermission'),
     ]
 
     operations = [
