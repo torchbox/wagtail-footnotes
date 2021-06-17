@@ -6,3 +6,5 @@ build/
 wagtail_footnotes.egg-info/
 
 db.sqlite3
+
+.coverage
