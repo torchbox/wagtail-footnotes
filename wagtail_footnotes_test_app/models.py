@@ -6,7 +6,7 @@ from . import blocks
 
 
 class TestPage(Page):
-    # template = "patterns/pages/home/home_page.html"
+    template = "wagtail_footnotes_test_app/test_page.html"
 
     body = StreamField(blocks.CustomBlock())
 

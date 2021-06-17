@@ -16,17 +16,21 @@ from .. import factories
 
 
 class Footnotes(TestCase):
+    def setUp(self):
+        # Build home page and default site
+        self.root_page = wagtail_factories.PageFactory(parent=None)
+        self.site = wagtail_factories.SiteFactory(
+            is_default_site=True, root_page=self.root_page
+        )
+
     def test_create_page_with_footnote(self):
         # Build a page
         rich_text = RichText("test")
-
-        root_page = wagtail_factories.PageFactory(parent=None)
         page = factories.TestPage(
-            parent=root_page,
+            parent=self.root_page,
             body__0__paragraph__value=rich_text,
         )
         # Render the page
         response = self.client.get(page.url)
         # Test the response
-        # TODO: Fix, failing with a 404
         self.assertEquals(response.status_code, 200)
