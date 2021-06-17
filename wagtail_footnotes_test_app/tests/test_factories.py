@@ -33,7 +33,8 @@ class TestPageFactory(TestCase):
         # Build page
         rich_text = RichText("test")
         page = factories.TestPage(
-            parent=self.root_page, body__0__paragraph__value=rich_text
+            parent=self.root_page,
+            body__0__paragraph__value=rich_text,
         )
         # Test body value
         self.assertEqual(str(page.body[0]), str(rich_text))
