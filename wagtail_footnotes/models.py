@@ -24,10 +24,11 @@ class Footnote(models.Model):
     )
     text = RichTextField(
         features=getattr(
-            settings, 
-            'WAGTAIL_FOOTNOTES_TEXT_FEATURES', 
-            ["bold", "italic", "link"]
+            settings, "WAGTAIL_FOOTNOTES_TEXT_FEATURES", ["bold", "italic", "link"]
         )
     )
 
     panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
+
+    class Meta:
+        unique_together = ("page", "uuid")
