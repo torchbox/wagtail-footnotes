@@ -17,7 +17,6 @@ class Footnote(models.Model):
 
     page = ParentalKey("wagtailcore.Page", related_name="footnotes")
     uuid = CustomUUIDField(
-        unique=True,
         verbose_name="ID",
         help_text="The ID of the footnote is shown in the rich text editor for "
         "reference.",
