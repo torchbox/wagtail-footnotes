@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Clean up old step from README - It is no longer recommended to define footnotes in `WAGTAILADMIN_RICH_TEXT_EDITORS`
+- Add `footnotes` rich text feature automatically
+- Clean up `RichTextBlockWithFootnotes`
+
 ## 0.6.0
 
 - Add `WAGTAIL_FOOTNOTES_TEXT_FEATURES` to add custom rich text features to footnote content

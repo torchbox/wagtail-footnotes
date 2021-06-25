@@ -33,15 +33,6 @@ Add footnotes functionality to your Wagtail project.
  - Update your `RichTextBlock`s 
     - Add `"footnotes"` to the `features` arg for each `RichTextBlock` that you want to have this functionality
     - You will also need to change any `RichTextBlock`s to `wagtail_footnotes.blocks.RichTextBlockWithFootnotes`
-    - You can add the footnotes to `RichTextBlock`s across the project by updating `WAGTAILADMIN_RICH_TEXT_EDITORS["default"]["OPTIONS"]["features"]`:
-      ```python
-      WAGTAILADMIN_RICH_TEXT_EDITORS = {
-          "default": {
-              "WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea",
-              "OPTIONS": {"features": ["bold", "italic", "h3", "h4", "ol", "ul", "link", "footnotes"]},
-          }
-      }
-      ```
  - Update your page templates to include `{% include "wagtail_footnotes/includes/footnotes.html" %}`
  - Make and run migrations:
    ```
