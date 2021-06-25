@@ -18,9 +18,12 @@ class RichTextBlockWithFootnotes(RichTextBlock):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.features += "footnotes"
+        if not self.features:
+            self.features = []
+        if "footnotes" not in self.features:
+            self.features.append("footnotes")
 
-    def replace_footnote_tags(self, html, context=None):
+    def replace_footnote_tags(self, value, html, context=None):
         if context is None:
             new_context = self.get_context(value)
         else:
@@ -49,12 +52,12 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             return self.render_basic(value, context=context)
 
         html = super().render(value, context=context)
-        return self.replace_footnote_tags(html, context=context)
+        return self.replace_footnote_tags(value, html, context=context)
 
     def render_basic(self, value, context=None):
         html = super().render_basic(value, context)
 
-        return self.replace_footnote_tags(html, context=context)
+        return self.replace_footnote_tags(value, html, context=context)
 
     def process_footnote(self, footnote_id, page):
         footnote = self.footnotes[footnote_id]
