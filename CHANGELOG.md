@@ -1,6 +1,6 @@
 # Wagtail Footnotes Changelog
 
-## Unreleased
+## 0.7.0
 
 - Clean up old step from README - It is no longer recommended to define footnotes in `WAGTAILADMIN_RICH_TEXT_EDITORS`
 - Add `footnotes` rich text feature automatically
