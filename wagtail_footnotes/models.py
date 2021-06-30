@@ -17,17 +17,17 @@ class Footnote(models.Model):
 
     page = ParentalKey("wagtailcore.Page", related_name="footnotes")
     uuid = CustomUUIDField(
-        unique=True,
         verbose_name="ID",
         help_text="The ID of the footnote is shown in the rich text editor for "
         "reference.",
     )
     text = RichTextField(
         features=getattr(
-            settings, 
-            'WAGTAIL_FOOTNOTES_TEXT_FEATURES', 
-            ["bold", "italic", "link"]
+            settings, "WAGTAIL_FOOTNOTES_TEXT_FEATURES", ["bold", "italic", "link"]
         )
     )
 
     panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
+
+    class Meta:
+        unique_together = ("page", "uuid")
