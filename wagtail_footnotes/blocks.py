@@ -3,6 +3,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from wagtail.core.blocks import RichTextBlock
+from wagtail.core.models import Page
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
 
@@ -29,7 +30,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         else:
             new_context = self.get_context(value, parent_context=dict(context))
 
-        if "page" not in new_context:
+        if "page" not in new_context or not isinstance(new_context["page"], Page):
             return html
 
         page = new_context["page"]
