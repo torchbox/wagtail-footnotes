@@ -30,7 +30,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         else:
             new_context = self.get_context(value, parent_context=dict(context))
 
-        if "page" not in new_context or not isinstance(new_context["page"], Page):
+        if not isinstance(new_context.get("page"), Page):
             return html
 
         page = new_context["page"]
