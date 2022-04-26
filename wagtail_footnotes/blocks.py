@@ -1,5 +1,6 @@
 import re
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from wagtail.core.blocks import RichTextBlock
@@ -38,13 +39,21 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             page.footnotes_list = []
         self.footnotes = {footnote.uuid: footnote for footnote in page.footnotes.all()}
 
+        def render_reference(index):
+            template = getattr(
+                settings, "WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE",
+                '<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
+            )
+
+            return template.format(index=index)
+
         def replace_tag(match):
             try:
                 index = self.process_footnote(match.group(1), page)
             except (KeyError, ValidationError):
                 return ""
             else:
-                return f'<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
+                return render_reference(index)
 
         return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))
 

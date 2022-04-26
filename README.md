@@ -46,6 +46,10 @@ Add footnotes functionality to your Wagtail project.
    - Default: `["bold", "italic", "link"]`
    - Use this to update a list of Rich Text features allowed in the footnote text.
 
+ - `WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE`
+   - Default: `<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>`
+   - Use this to customize the markup for footnote references appearing in frontend.
+
 ## Common issues
  - I click on the `Fn` button in the editor and it stops working
     - This is likely because the URL in the JS does not match the URL of the footnotes view. Check the URL in `wagtail_footnotes/static/footnotes/js/footnotes.js` matches the URL you set.
