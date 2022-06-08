@@ -1,5 +1,13 @@
 # Wagtail Footnotes Changelog
 
+## [Unreleased]
+
+ - Add support for Wagtail 3.0 and drop support for all Wagtail versions
+   before 2.15
+ - Dropped support for all Django versions
+   before 3.2
+ - Removed support for Python 3.6
+
 ## 0.7.0
 
 - Clean up old step from README - It is no longer recommended to define footnotes in `WAGTAILADMIN_RICH_TEXT_EDITORS`
