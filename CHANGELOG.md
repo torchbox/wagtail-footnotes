@@ -1,12 +1,13 @@
 # Wagtail Footnotes Changelog
 
-## [Unreleased]
+## 0.8.0
 
  - Add support for Wagtail 3.0 and drop support for all Wagtail versions
    before 2.15
  - Dropped support for all Django versions
    before 3.2
  - Removed support for Python 3.6
+ - Fix previews https://github.com/torchbox/wagtail-footnotes/pull/24 - [@jsma](https://github.com/jsma)
 
 ## 0.7.0
 
