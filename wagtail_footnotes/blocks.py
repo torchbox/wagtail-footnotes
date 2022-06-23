@@ -36,7 +36,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         page = new_context["page"]
         if not hasattr(page, "footnotes_list"):
             page.footnotes_list = []
-        self.footnotes = {footnote.uuid: footnote for footnote in page.footnotes.all()}
+        self.footnotes = {str(footnote.uuid): footnote for footnote in page.footnotes.all()}
 
         def replace_tag(match):
             try:
