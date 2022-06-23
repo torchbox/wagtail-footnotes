@@ -1,5 +1,9 @@
 # Wagtail Footnotes Changelog
 
+## 0.7.1
+
+- Fix previews https://github.com/torchbox/wagtail-footnotes/pull/24 - [@jsma](https://github.com/jsma)
+
 ## 0.7.0
 
 - Clean up old step from README - It is no longer recommended to define footnotes in `WAGTAILADMIN_RICH_TEXT_EDITORS`
