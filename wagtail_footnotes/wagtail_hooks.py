@@ -2,10 +2,14 @@ import wagtail.admin.rich_text.editors.draftail.features as draftail_features
 from django.templatetags.static import static
 from django.utils.html import format_html_join
 from draftjs_exporter.dom import DOM
-from wagtail.admin.rich_text.converters.html_to_contentstate import (
-    InlineEntityElementHandler,
-)
-from wagtail.core import hooks
+from wagtail.admin.rich_text.converters.html_to_contentstate import \
+    InlineEntityElementHandler
+
+try:
+    from wagtail import hooks
+except ImportError:
+    # Wagtail<3.0
+    from wagtail.core import hooks
 
 
 @hooks.register("register_rich_text_features")
