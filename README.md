@@ -79,6 +79,20 @@ class MyPage(Page):
     )
 ```
 
+### Adding footnotes as a global default
+
+You might want to simply have all RichText editors display footnotes. But remember that you will need the footnotes `InlinePanel` enabled on all your Page models for this to really make sense.
+
+```python
+# ...
+WAGTAILADMIN_RICH_TEXT_EDITORS = {
+    "default": {
+        "WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea",
+        "OPTIONS": {"features": ["bold", "italic", "h3", "h4", "ol", "ul", "link", "footnotes"]},
+    }
+}
+```
+
 ### 🏁 Finally, ALWAYS
 
 After adding the footnotes app and making changes to your models, make and run migrations:
