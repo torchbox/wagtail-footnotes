@@ -2,43 +2,56 @@
 
 Add footnotes functionality to your Wagtail project.
 
-## Usage
- - Add the app to `INSTALLED_APPS`:
-   ```python
-   INSTALLED_APPS = [
-       ...
-       "wagtail_footnotes",
-       ...
-   ]
-   ```
- - Add the footnotes `urls.py` to your project's `urls.py`:
-   ```python
-   from wagtail_footnotes import urls as footnotes_urls
-   urlpatterns = [
-       ...
-       path("footnotes/", include(footnotes_urls)),
-       ...
-   ]
-   ```
-   Note: The URL has to be defined as above as it is currently hardcoded in the Javascript.
- - Update your page models to show the footnotes field:
-   ```python
-   class InformationPage(BasePage):
+## ⚡ Quick start
+
+Add the app to `INSTALLED_APPS`:
+
+```python
+INSTALLED_APPS = [
+    ...
+    "wagtail_footnotes",
+    ...
+]
+```
+
+Add the footnotes `urls.py` to your project's `urls.py`:
+
+```python
+from wagtail_footnotes import urls as footnotes_urls
+urlpatterns = [
+    ...
+    path("footnotes/", include(footnotes_urls)),
+    ...
+]
+```
+
+*Note: The URL has to be defined as above as it is currently hardcoded in the Javascript.*
+
+Update your page models to show the footnotes field:
+
+```python
+class InformationPage(BasePage):
+    ...
+    content_panels = [
         ...
-        content_panels = [
-            ...
-            InlinePanel("footnotes", label="Footnotes"),
-        ]
-   ```
- - Update your `RichTextBlock`s 
-    - Add `"footnotes"` to the `features` arg for each `RichTextBlock` that you want to have this functionality
-    - You will also need to change any `RichTextBlock`s to `wagtail_footnotes.blocks.RichTextBlockWithFootnotes`
- - Update your page templates to include `{% include "wagtail_footnotes/includes/footnotes.html" %}`
- - Make and run migrations:
-   ```
-   ./manage.py makemigrations
-   ./manage.py migrate
-   ```
+        InlinePanel("footnotes", label="Footnotes"),
+    ]
+```
+
+Update your `RichTextBlock`s 
+
+Add `"footnotes"` to the `features` arg for each `RichTextBlock` that you want to have this functionality
+
+You will also need to change any `RichTextBlock`s to `wagtail_footnotes.blocks.RichTextBlockWithFootnotes`
+
+Update your page templates to include `{% include "wagtail_footnotes/includes/footnotes.html" %}`
+
+Make and run migrations:
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
 
 ## Settings
 
