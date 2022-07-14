@@ -44,7 +44,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             return html
 
         page = new_context["page"]
-        if not hasattr(page, "footnotes_list"):
+        if not hasattr(page, "footnotes"):
             page.footnotes_list = []
         self.footnotes = {str(footnote.uuid): footnote for footnote in page.footnotes.all()}
 
