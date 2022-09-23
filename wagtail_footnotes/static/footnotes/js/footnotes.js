@@ -47,19 +47,19 @@ class FootnoteSource extends React.Component {
         table.empty();
 
         var live_footnotes = document.querySelectorAll(
-          "#id_footnotes-FORMS > li:not(.deleted)"
+          "#id_footnotes-FORMS .w-panel"
         );
         Array.prototype.forEach.call(live_footnotes, function (value) {
           var text = $(".public-DraftEditor-content", value).text();
           var uuid = $('input[id*="-uuid"]', value)[0].value;
           var row = $(
             "<tr data-uuid=" +
-              uuid +
-              "><td>" +
-              text +
-              "</td><td>" +
-              uuid.substring(0, 6) +
-              "</td></tr>"
+            uuid +
+            "><td>" +
+            text +
+            "</td><td>" +
+            uuid.substring(0, 6) +
+            "</td></tr>"
           ).css({ cursor: "pointer" });
           table.append(row);
 
@@ -112,6 +112,7 @@ class FootnoteSource extends React.Component {
   }
 
   render() {
+    console.log("FootnoteSource", this.props);
     return null;
   }
 }
