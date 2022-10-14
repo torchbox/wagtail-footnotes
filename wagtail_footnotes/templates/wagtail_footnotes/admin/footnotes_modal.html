@@ -4,14 +4,14 @@
 <div id="footnotes-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <button type="button" class="button close icon text-replace icon-cross" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="button close button--icon text-replace" data-dismiss="modal"><svg class="icon icon-cross" aria-hidden="true"><use href="#icon-cross"></use></svg>Close</button>
             <div class="modal-body">
 
-                <header class="nice-padding merged tab-merged ">
+                <header class="w-header w-header--merged">
                     <div class="row">
                         <div class="left">
                             <div class="col">
-                                <h1 class="icon icon-doc-full-inverse">Choose a footnote</h1>
+                                <h1 class="w-header__title">Choose a footnote</h1>
                             </div>
 
                             </div>
@@ -20,27 +20,29 @@
                     </div>
                 </header>
 
-                <div class="tab-content">
-                    <section id="search" class="active nice-padding">
-                        <div id="search-results" class="listing documents">
-                             <h2>Footnotes</h2>
-                             <p>To add a new footnote, close this window and scroll to the "FOOTNOTES" section at bottom of the page.</p>
-                             <table id="footnotes-listing" class="listing">
-                                 <thead>
-                                     <tr>
-                                         <th>Text</th>
-                                         <th>ID</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
+                <div class="w-tabs" data-tabs="" data-tabs-disable-url="">
+                    <div class="w-tabs__wrapper w-overflow-hidden">
+                        <div role="tablist" class="w-tabs__list w-w-full"><!-- intentionally empty to get some top padding --></div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="w-tabs__panel">
+                            <h2>Footnotes</h2>
+                            <p>To add a new footnote, close this window and scroll to the "FOOTNOTES" section at bottom of the page.</p>
+                            <table id="footnotes-listing" class="listing">
+                                <thead>
+                                    <tr>
+                                        <th>Text</th>
+                                        <th>ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                 </tbody>
-                             </table>
-                             <p>Footnotes will appear with arbitrary numbers here in the editor. In the published page, and in previews, their numbering will be numerical and ordered.</p>
+                                </tbody>
+                            </table>
+                            <p>Footnotes will appear with arbitrary numbers here in the editor. In the published page, and in previews, their numbering will be numerical and ordered.</p>
                         </div>
-                    </section>
+                    </div>
                 </div>
-
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -1,0 +1,47 @@
+{% comment %}
+    This template is used in wagtail CMS
+{% endcomment %}
+<div id="footnotes-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="button close icon text-replace icon-cross" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div class="modal-body">
+
+                <header class="nice-padding merged tab-merged ">
+                    <div class="row">
+                        <div class="left">
+                            <div class="col">
+                                <h1 class="icon icon-doc-full-inverse">Choose a footnote</h1>
+                            </div>
+
+                            </div>
+                            <div class="right">
+                        </div>
+                    </div>
+                </header>
+
+                <div class="tab-content">
+                    <section id="search" class="active nice-padding">
+                        <div id="search-results" class="listing documents">
+                             <h2>Footnotes</h2>
+                             <p>To add a new footnote, close this window and scroll to the "FOOTNOTES" section at bottom of the page.</p>
+                             <table id="footnotes-listing" class="listing">
+                                 <thead>
+                                     <tr>
+                                         <th>Text</th>
+                                         <th>ID</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+
+                                 </tbody>
+                             </table>
+                             <p>Footnotes will appear with arbitrary numbers here in the editor. In the published page, and in previews, their numbering will be numerical and ordered.</p>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

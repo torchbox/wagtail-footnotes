@@ -47,7 +47,7 @@ class FootnoteSource extends React.Component {
         table.empty();
 
         var live_footnotes = document.querySelectorAll(
-          "#id_footnotes-FORMS .w-panel"
+          "#id_footnotes-FORMS > li:not(.deleted)"
         );
         Array.prototype.forEach.call(live_footnotes, function (value) {
           var text = $(".public-DraftEditor-content", value).text();
@@ -112,7 +112,6 @@ class FootnoteSource extends React.Component {
   }
 
   render() {
-    console.log("FootnoteSource", this.props);
     return null;
   }
 }

@@ -2,6 +2,7 @@ import wagtail.admin.rich_text.editors.draftail.features as draftail_features
 from django.templatetags.static import static
 from django.utils.html import format_html_join
 from draftjs_exporter.dom import DOM
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.rich_text.converters.html_to_contentstate import \
     InlineEntityElementHandler
 
@@ -24,12 +25,17 @@ def register_footnotes_feature(features):
 
     control = {"type": type_, "label": "Fn", "description": "Footnotes"}
 
+    if WAGTAIL_VERSION >= (4, 0):
+        footnotes_js = "footnotes/js/footnotes.js"
+    else:
+        footnotes_js = "footnotes/js/footnotes_legacy.js"
+
     features.register_editor_plugin(
         "draftail",
         feature_name,
         draftail_features.EntityFeature(
             control,
-            js = ['wagtailadmin/js/draftail.js', 'footnotes/js/footnotes.js']
+            js = ['wagtailadmin/js/draftail.js', footnotes_js],
         ),
     )
 
