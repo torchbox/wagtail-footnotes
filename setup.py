@@ -58,7 +58,7 @@ setup(
     ],
     install_requires=["wagtail>=2.15, <5.0"],
     extras_require={
-        "testing": ["dj-database-url"],
+        "testing": ["dj-database-url==0.5.0"],
     },
     zip_safe=False,
 )

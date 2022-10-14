@@ -159,7 +159,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "test-media")
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "Wagtail {{ cookiecutter.project_name }} test site"
+WAGTAIL_SITE_NAME = "Wagtail Footnotes test site"
 
 if WAGTAIL_VERSION >= (3, 0):
     WAGTAILADMIN_BASE_URL = "http://localhost:8000"
