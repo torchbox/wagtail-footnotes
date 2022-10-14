@@ -3,6 +3,7 @@
 ## 0.9.0
 
 - Add support for Wagtail 4.0
+- Add GitHub Action to publish to PyPI on release by @zerolab in https://github.com/torchbox/wagtail-footnotes/pull/45
 
 ## 0.8.0
 
