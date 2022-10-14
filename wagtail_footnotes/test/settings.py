@@ -94,12 +94,12 @@ TEMPLATES = [
 # Using DatabaseCache to make sure that the cache is cleared between tests.
 # This prevents false-positives in some wagtail core tests where we are
 # changing the 'wagtail_root_paths' key which may cause future tests to fail.
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": "cache",
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+#         "LOCATION": "cache",
+#     }
+# }
 
 
 # don't use the intentionally slow default password hasher

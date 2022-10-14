@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+{{ page.title }}
+
+{% include_block page.body %}
+
+{% include "wagtail_footnotes/includes/footnotes.html" %}
+
+{% endblock content %}
