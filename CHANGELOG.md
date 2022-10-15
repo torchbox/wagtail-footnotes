@@ -1,5 +1,9 @@
 # Wagtail Footnotes Changelog
 
+## Unreleased
+
+- Add a test app and testing. Also add some development helpers and documentation.
+
 ## 0.9.0
 
 - Add support for Wagtail 4.0
