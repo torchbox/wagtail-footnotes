@@ -2,7 +2,13 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.fields
+from wagtail import VERSION as WAGTAIL_VERSION
+
+if WAGTAIL_VERSION >= (3, 0):
+    import wagtail.fields as wagtail_fields
+else:
+    import wagtail.core.fields as wagtail_fields
+    
 import wagtail_footnotes.blocks
 
 
@@ -11,42 +17,79 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("wagtailcore", "0077_alter_revision_user"),
+        ("wagtailcore", "0040_page_draft_title"),
     ]
 
-    operations = [
-        migrations.CreateModel(
-            name="TestPageStreamField",
-            fields=[
-                (
-                    "page_ptr",
-                    models.OneToOneField(
-                        auto_created=True,
-                        on_delete=django.db.models.deletion.CASCADE,
-                        parent_link=True,
-                        primary_key=True,
-                        serialize=False,
-                        to="wagtailcore.page",
+    if WAGTAIL_VERSION >= (3, 0):
+        operations = [
+            migrations.CreateModel(
+                name="TestPageStreamField",
+                fields=[
+                    (
+                        "page_ptr",
+                        models.OneToOneField(
+                            auto_created=True,
+                            on_delete=django.db.models.deletion.CASCADE,
+                            parent_link=True,
+                            primary_key=True,
+                            serialize=False,
+                            to="wagtailcore.page",
+                        ),
                     ),
-                ),
-                (
-                    "body",
-                    wagtail.fields.StreamField(
-                        [
-                            (
-                                "paragraph",
-                                wagtail_footnotes.blocks.RichTextBlockWithFootnotes(
-                                    features=["footnotes"]
-                                ),
-                            )
-                        ],
-                        use_json_field=True,
+                    (
+                        "body",
+                        wagtail_fields.StreamField(
+                            [
+                                (
+                                    "paragraph",
+                                    wagtail_footnotes.blocks.RichTextBlockWithFootnotes(
+                                        features=["footnotes"]
+                                    ),
+                                )
+                            ],
+                            use_json_field=True,
+                        ),
                     ),
-                ),
-            ],
-            options={
-                "abstract": False,
-            },
-            bases=("wagtailcore.page",),
-        ),
-    ]
+                ],
+                options={
+                    "abstract": False,
+                },
+                bases=("wagtailcore.page",),
+            ),
+        ]
+    else:
+        operations = [
+            migrations.CreateModel(
+                name="TestPageStreamField",
+                fields=[
+                    (
+                        "page_ptr",
+                        models.OneToOneField(
+                            auto_created=True,
+                            on_delete=django.db.models.deletion.CASCADE,
+                            parent_link=True,
+                            primary_key=True,
+                            serialize=False,
+                            to="wagtailcore.page",
+                        ),
+                    ),
+                    (
+                        "body",
+                        wagtail_fields.StreamField(
+                            [
+                                (
+                                    "paragraph",
+                                    wagtail_footnotes.blocks.RichTextBlockWithFootnotes(
+                                        features=["footnotes"]
+                                    ),
+                                )
+                            ],
+                        ),
+                    ),
+                ],
+                options={
+                    "abstract": False,
+                },
+                bases=("wagtailcore.page",),
+            ),
+        ]
