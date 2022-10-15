@@ -49,12 +49,8 @@ setup(
         "Framework :: Django :: 4.1",
         "Framework :: Wagtail",
         "Framework :: Wagtail :: 2",
-        "Framework :: Wagtail :: 2.15",
-        "Framework :: Wagtail :: 2.16",
         "Framework :: Wagtail :: 3",
-        "Framework :: Wagtail :: 3.0",
         "Framework :: Wagtail :: 4",
-        "Framework :: Wagtail :: 4.0",
     ],
     install_requires=["wagtail>=2.15, <5.0"],
     extras_require={
