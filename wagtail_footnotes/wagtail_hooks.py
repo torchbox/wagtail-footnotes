@@ -1,15 +1,12 @@
 import wagtail.admin.rich_text.editors.draftail.features as draftail_features
-from django.templatetags.static import static
-from django.utils.html import format_html_join
 from draftjs_exporter.dom import DOM
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.rich_text.converters.html_to_contentstate import \
     InlineEntityElementHandler
 
-try:
+if WAGTAIL_VERSION >= (3, 0):
     from wagtail import hooks
-except ImportError:
-    # Wagtail<3.0
+else:
     from wagtail.core import hooks
 
 
