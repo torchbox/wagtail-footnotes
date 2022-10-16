@@ -12,7 +12,6 @@ from setuptools import find_packages, setup
 
 from wagtail_footnotes import __version__
 
-
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
@@ -22,7 +21,7 @@ setup(
     version=__version__,
     description="Add footnotes to rich text in your Wagtail pages",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     author="Cameron Lamb",
     author_email="cameron.lamb@torchbox.com",
     url="https://github.com/torchbox/wagtail-footnotes",
