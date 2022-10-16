@@ -1,0 +1,9 @@
+[
+{
+  "model": "wagtail_footnotes_test.testpagestreamfield",
+  "pk": 3,
+  "fields": {
+    "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"ctas7\\\">Curabitur blandit tempus porttitor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor. Donec id elit non mi porta gravida at eget metus.<footnote id=\\\"20ff95a3-9320-4132-a497-efc371dd36ea\\\">[20ff95]</footnote></p>\", \"id\": \"84c8b527-727a-44b6-af04-3c04904b401b\"}]"
+  }
+}
+]

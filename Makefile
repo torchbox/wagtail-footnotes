@@ -16,12 +16,24 @@ test:
 run: 
 	python testmanage.py runserver 0.0.0.0:8000
 
-setup:
+install:
 	@pip install ".[testing]" --force
+
+setup:
 	@python testmanage.py migrate
-	@echo "from django.contrib.auth import get_user_model; get_user_model().objects.create_superuser('admin', '', 'password')" | python testmanage.py shell
-	@python testmanage.py loaddata wagtail_footnotes/test/fixtures/initial_data.json
+	@python testmanage.py loaddata wagtail_footnotes/test/fixtures/core.json
+	@python testmanage.py loaddata wagtail_footnotes/test/fixtures/users.json
+	@python testmanage.py loaddata wagtail_footnotes/test/fixtures/page.json
+	@python testmanage.py loaddata wagtail_footnotes/test/fixtures/footnotes.json
 	@make run
 
 fixtures:
-	@./fixtures.sh
+	@echo "Creating fixtures"
+	@python testmanage.py dumpdata \
+	wagtail_footnotes_test.TestPageStreamField --indent 2 > wagtail_footnotes/test/fixtures/page.json
+	@python testmanage.py dumpdata \
+	wagtailcore.Page --indent 2 > wagtail_footnotes/test/fixtures/core.json
+	@python testmanage.py dumpdata \
+	wagtail_footnotes --indent 2 > wagtail_footnotes/test/fixtures/footnotes.json
+	@python testmanage.py dumpdata \
+	auth.user --indent 2 > wagtail_footnotes/test/fixtures/users.json

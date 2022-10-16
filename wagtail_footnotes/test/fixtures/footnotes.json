@@ -1,0 +1,11 @@
+[
+{
+  "model": "wagtail_footnotes.footnote",
+  "pk": 1,
+  "fields": {
+    "page": 3,
+    "uuid": "20ff95a3-9320-4132-a497-efc371dd36ea",
+    "text": "<p data-block-key=\"ku86h\">Footnote One</p><p data-block-key=\"6m7ek\">Curabitur blandit tempus porttitor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor. Donec id elit non mi porta gravida at eget metus.</p>"
+  }
+}
+]
