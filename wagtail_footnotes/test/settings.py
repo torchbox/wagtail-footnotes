@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 """
 
 import os
-import dj_database_url
 
+import dj_database_url
 from wagtail import VERSION as WAGTAIL_VERSION
 
 # Build paths inside the project like this: os.path.join(PROJECT_DIR, ...)
@@ -172,4 +172,4 @@ WAGTAILSEARCH_BACKENDS = {
 if WAGTAIL_VERSION >= (3, 0):
     WAGTAILADMIN_BASE_URL = "http://localhost:8000"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

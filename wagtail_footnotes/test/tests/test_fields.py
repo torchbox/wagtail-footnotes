@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from wagtail_footnotes.fields import CustomUUIDField
 
 

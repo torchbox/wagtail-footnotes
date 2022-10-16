@@ -1,5 +1,6 @@
 from django import forms
 from django.test import TestCase
+
 from wagtail_footnotes.widgets import ReadonlyUUIDInput
 
 

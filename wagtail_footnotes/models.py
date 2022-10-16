@@ -4,10 +4,10 @@ from modelcluster.fields import ParentalKey
 from wagtail import VERSION as WAGTAIL_VERSION
 
 if WAGTAIL_VERSION >= (3, 0):
-    from wagtail.admin.panels import FieldPanel, InlinePanel
+    from wagtail.admin.panels import FieldPanel
     from wagtail.fields import RichTextField
 else:
-    from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+    from wagtail.admin.edit_handlers import FieldPanel
     from wagtail.core.fields import RichTextField
 
 from wagtail_footnotes.fields import CustomUUIDField

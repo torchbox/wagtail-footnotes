@@ -13,10 +13,11 @@ else:
 
 class TestBlocks(TestCase):
     def test_custom_block(self):
-        block = StreamBlock([
-            ("paragraph", RichTextBlockWithFootnotes(features=["footnotes"])),
-        ])
+        block = StreamBlock(
+            [
+                ("paragraph", RichTextBlockWithFootnotes(features=["footnotes"])),
+            ]
+        )
         rich_text_block_with_footnotes = block.child_blocks["paragraph"]
         self.assertIsInstance(rich_text_block_with_footnotes, blocks.RichTextBlock)
         self.assertEqual(rich_text_block_with_footnotes.features, ["footnotes"])
-        

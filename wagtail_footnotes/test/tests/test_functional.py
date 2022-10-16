@@ -79,7 +79,7 @@ class TestFunctional(TestCase):
 
         soup = bs4(response.content, "html.parser")
 
-        # Test that required html tags are present with correct 
+        # Test that required html tags are present with correct
         # attrs that enable the footnotes to respond to clicks
         source_anchor = soup.find("a", {"id": "footnote-source-1"})
         self.assertTrue(source_anchor)

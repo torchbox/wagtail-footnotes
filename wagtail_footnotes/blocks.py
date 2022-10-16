@@ -2,7 +2,6 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-
 from wagtail import VERSION as WAGTAIL_VERSION
 
 if WAGTAIL_VERSION >= (3, 0):
@@ -11,7 +10,7 @@ if WAGTAIL_VERSION >= (3, 0):
 else:
     from wagtail.core.blocks import RichTextBlock
     from wagtail.core.models import Page
-    
+
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
 
@@ -44,7 +43,9 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         page = new_context["page"]
         if not hasattr(page, "footnotes_list"):
             page.footnotes_list = []
-        self.footnotes = {str(footnote.uuid): footnote for footnote in page.footnotes.all()}
+        self.footnotes = {
+            str(footnote.uuid): footnote for footnote in page.footnotes.all()
+        }
 
         def replace_tag(match):
             try:
