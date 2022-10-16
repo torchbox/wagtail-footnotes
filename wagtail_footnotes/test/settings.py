@@ -161,6 +161,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "test-media")
 
 WAGTAIL_SITE_NAME = "Wagtail Footnotes test site"
 
+# Search
+# https://docs.wagtail.org/en/stable/topics/search/backends.html
+WAGTAILSEARCH_BACKENDS = {
+    "default": {
+        "BACKEND": "wagtail.search.backends.database",
+    }
+}
+
 if WAGTAIL_VERSION >= (3, 0):
     WAGTAILADMIN_BASE_URL = "http://localhost:8000"
 
