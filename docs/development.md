@@ -4,7 +4,7 @@
 
 ## Setup
 
-### Create and activate virtual environment.
+### Create and activate virtual environment
 
 In a bash console and run
 
