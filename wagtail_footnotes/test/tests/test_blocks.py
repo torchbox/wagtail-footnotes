@@ -18,7 +18,8 @@ else:
 
 
 class TestBlocks(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(self):
         home_page = Page.objects.get(title="Welcome to your new Wagtail site!")
 
         self.test_page_no_footnote = TestPageStreamField(
