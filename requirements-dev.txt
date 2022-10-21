@@ -4,3 +4,4 @@ isort==5.10.1
 pre-commit==2.20.0
 tox
 pymarkdown
+blacken-docs
