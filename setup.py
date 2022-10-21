@@ -51,7 +51,16 @@ setup(
     ],
     install_requires=["wagtail>=2.15, <5.0"],
     extras_require={
-        "testing": ["dj-database-url==0.5.0"],
+        "testing": [
+            "dj-database-url==0.5.0",
+            "black==22.10.0",
+            "flake8==5.0.4",
+            "isort==5.10.1",
+            "pre-commit==2.20.0",
+            "tox==3.26.0",
+            "pymarkdown==0.1.4",
+            "blacken-docs==1.12.1",
+        ],
     },
     zip_safe=False,
 )
