@@ -17,7 +17,6 @@ Then run:
 
 ```bash
 pip install ".[testing]"
-pip install -r requirements-dev.txt
 python testmanage.py migrate
 python testmanage.py runserver 0.0.0.0:8000
 ```
