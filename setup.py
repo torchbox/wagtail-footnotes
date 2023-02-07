@@ -8,7 +8,7 @@
 
 from os import path
 
-from setuptools import find_namespace_packages, setup
+from setuptools import find_packages, setup
 
 from wagtail_footnotes import __version__
 
@@ -25,7 +25,7 @@ setup(
     author="Cameron Lamb",
     author_email="cameron.lamb@torchbox.com",
     url="https://github.com/torchbox/wagtail-footnotes",
-    packages=find_namespace_packages(),
+    packages=find_packages(exclude=["tests", "tests.*", "tests.*.*", "tests.*.*.*"]),
     include_package_data=True,
     license="MIT",
     classifiers=[
