@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["localhost", "testserver"]
 
 INSTALLED_APPS = [
     "wagtail_footnotes",
-    "wagtail_footnotes.test",
+    "wagtail_footnotes.tests",
     "wagtail.contrib.search_promotions",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -71,7 +71,7 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
-ROOT_URLCONF = "wagtail_footnotes.test.urls"
+ROOT_URLCONF = "wagtail_footnotes.tests.urls"
 
 TEMPLATES = [
     {

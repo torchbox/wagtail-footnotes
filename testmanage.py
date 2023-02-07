@@ -8,7 +8,7 @@ import warnings
 
 from django.core.management import execute_from_command_line
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "wagtail_footnotes.test.settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "wagtail_footnotes.tests.settings"
 
 
 def make_parser():
