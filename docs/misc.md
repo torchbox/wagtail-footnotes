@@ -19,8 +19,8 @@ python testmanage.py dumpdata auth.user --indent 2 > wagtail_footnotes/test/fixt
 ## Tox snippets
 
 ```bash
-tox -e python3.9-django3.0-wagtail2.15
-tox -e python3.9-django3.2-wagtail2.16
-tox -e python3.10-django4.0-wagtail3.0
-tox -e python3.10-django4.1-wagtail4.0
+tox -e python3.9-django3.2-wagtail4.1
+tox -e python3.9-django3.2-wagtail4.2
+tox -e python3.10-django4.0-wagtail4.1
+tox -e python3.10-django4.1-wagtail4.2
 ```
