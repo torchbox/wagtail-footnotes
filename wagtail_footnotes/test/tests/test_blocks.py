@@ -1,20 +1,13 @@
 import json
 
 from django.test import TestCase
-from wagtail import VERSION as WAGTAIL_VERSION
+from wagtail import blocks
+from wagtail.fields import StreamBlock
+from wagtail.models import Page
 
 from wagtail_footnotes.blocks import RichTextBlockWithFootnotes
 from wagtail_footnotes.models import Footnote
 from wagtail_footnotes.test.models import TestPageStreamField
-
-if WAGTAIL_VERSION >= (3, 0):
-    from wagtail import blocks
-    from wagtail.fields import StreamBlock
-    from wagtail.models import Page
-else:
-    from wagtail.core import blocks
-    from wagtail.core.fields import StreamBlock
-    from wagtail.core.models import Page
 
 
 class TestBlocks(TestCase):

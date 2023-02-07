@@ -2,20 +2,13 @@
 
 import django.db.models.deletion
 import modelcluster.fields
-
-try:
-    import wagtail.fields as wagtail_fields
-except ImportError:
-    # Wagtail<3.0
-    import wagtail.core.fields as wagtail_fields
-
+import wagtail.fields as wagtail_fields
 from django.db import migrations, models
 
 import wagtail_footnotes.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [

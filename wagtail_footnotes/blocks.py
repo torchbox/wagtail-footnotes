@@ -2,15 +2,8 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-from wagtail import VERSION as WAGTAIL_VERSION
-
-if WAGTAIL_VERSION >= (3, 0):
-    from wagtail.blocks import RichTextBlock
-    from wagtail.models import Page
-else:
-    from wagtail.core.blocks import RichTextBlock
-    from wagtail.core.models import Page
-
+from wagtail.blocks import RichTextBlock
+from wagtail.models import Page
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
 

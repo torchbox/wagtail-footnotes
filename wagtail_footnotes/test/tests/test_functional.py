@@ -1,15 +1,9 @@
 import json
 
+from bs4 import BeautifulSoup as bs4
 from django.contrib.auth.models import User
 from django.test import TestCase
-from wagtail import VERSION as WAGTAIL_VERSION
-
-if WAGTAIL_VERSION >= (3, 0):
-    from wagtail.models import Page
-else:
-    from wagtail.core.models import Page
-
-from bs4 import BeautifulSoup as bs4
+from wagtail.models import Page
 
 from wagtail_footnotes.models import Footnote
 from wagtail_footnotes.test.models import TestPageStreamField

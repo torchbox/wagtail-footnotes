@@ -6,7 +6,6 @@ import wagtail_footnotes.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailcore", "0041_group_collection_permissions_verbose_name_plural"),
         ("wagtail_footnotes", "0001_initial"),
