@@ -2,7 +2,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.models import Page
 
-from wagtail_footnotes.tests.blocks import CustomBlock
+from .blocks import CustomBlock
 
 
 class TestPageStreamField(Page):

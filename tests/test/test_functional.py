@@ -6,7 +6,8 @@ from django.test import TestCase
 from wagtail.models import Page
 
 from wagtail_footnotes.models import Footnote
-from wagtail_footnotes.tests.models import TestPageStreamField
+
+from ..models import TestPageStreamField
 
 
 class TestFunctional(TestCase):
