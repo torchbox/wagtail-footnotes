@@ -1,5 +1,9 @@
 # Wagtail Footnotes Changelog
 
+## 0.9.2
+
+- Add support for Wagtail 5.x
+
 ## 0.9.0
 
 - Add support for Wagtail 4.0
