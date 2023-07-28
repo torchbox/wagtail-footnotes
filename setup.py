@@ -53,7 +53,7 @@ setup(
     extras_require={
         "testing": [
             "pre-commit>=3.3.0,<4",
-            "tox==3.26.0",
+            "tox>=4.6.4,<5",
         ],
     },
     zip_safe=False,
