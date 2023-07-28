@@ -6,6 +6,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 
 from wagtail_footnotes import urls as footnotes_urls
 
+
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),

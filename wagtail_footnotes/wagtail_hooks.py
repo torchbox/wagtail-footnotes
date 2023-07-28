@@ -1,4 +1,5 @@
 import wagtail.admin.rich_text.editors.draftail.features as draftail_features
+
 from draftjs_exporter.dom import DOM
 from wagtail import hooks
 from wagtail.admin.rich_text.converters.html_to_contentstate import (
@@ -18,14 +19,12 @@ def register_footnotes_feature(features):
 
     control = {"type": type_, "label": "Fn", "description": "Footnotes"}
 
-    footnotes_js = "footnotes/js/footnotes.js"
-
     features.register_editor_plugin(
         "draftail",
         feature_name,
         draftail_features.EntityFeature(
             control,
-            js=["wagtailadmin/js/draftail.js", footnotes_js],
+            js=["wagtailadmin/js/draftail.js", "footnotes/js/footnotes.js"],
         ),
     )
 

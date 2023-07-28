@@ -31,3 +31,6 @@ class Footnote(models.Model):
 
     class Meta:
         unique_together = ("page", "uuid")
+
+    def __str__(self):
+        return str(self.uuid)
