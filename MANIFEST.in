@@ -1,5 +1,8 @@
-include LICENSE *.rst *.txt *.md
+include LICENSE
 graft wagtail_footnotes
-global-exclude __pycache__
+prune **/__pycache__
 global-exclude *.py[co]
 global-exclude .DS_Store
+recursive-include wagtail_footnotes/static/footnotes/js
+recursive-include wagtail_footnotes/templates/wagtail_footnotes
+prune **/tests

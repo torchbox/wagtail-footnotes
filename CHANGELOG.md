@@ -1,18 +1,20 @@
 # Wagtail Footnotes Changelog
 
+## Unreleased
+
+- Add a test app and testing. Also add some development helpers and documentation.
+
 ## 0.9.0
 
 - Add support for Wagtail 4.0
-- Add GitHub Action to publish to PyPI on release by @zerolab in https://github.com/torchbox/wagtail-footnotes/pull/45
+- Add GitHub Action to publish to PyPI on release by @zerolab in (https://github.com/torchbox/wagtail-footnotes/pull/45)
 
 ## 0.8.0
 
- - Add support for Wagtail 3.0 and drop support for all Wagtail versions
-   before 2.15
- - Dropped support for all Django versions
-   before 3.2
- - Removed support for Python 3.6
- - Fix previews https://github.com/torchbox/wagtail-footnotes/pull/24 - [@jsma](https://github.com/jsma)
+- Add support for Wagtail 3.0 and drop support for all Wagtail versions before 2.15
+- Dropped support for all Django versions before 3.2
+- Removed support for Python 3.6
+- Fix previews (https://github.com/torchbox/wagtail-footnotes/pull/24) - [@jsma](https://github.com/jsma)
 
 ## 0.7.0
 

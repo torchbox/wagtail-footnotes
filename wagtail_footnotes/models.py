@@ -1,21 +1,11 @@
 from django.conf import settings
 from django.db import models
 from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import FieldPanel
+from wagtail.fields import RichTextField
 
-try:
-    from wagtail.admin.panels import FieldPanel, InlinePanel
-except ImportError:
-    # Wagtail<3.0
-    from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
-
-try:
-    from wagtail.fields import RichTextField
-except ImportError:
-    # Wagtail<3.0
-    from wagtail.core.fields import RichTextField
-
-from .fields import CustomUUIDField
-from .widgets import ReadonlyUUIDInput
+from wagtail_footnotes.fields import CustomUUIDField
+from wagtail_footnotes.widgets import ReadonlyUUIDInput
 
 
 class Footnote(models.Model):

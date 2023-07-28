@@ -1,11 +1,8 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from wagtail import VERSION as WAGTAIL_VERSION
 
-if WAGTAIL_VERSION >= (4, 0):
-    template_name = "wagtail_footnotes/admin/footnotes_modal.html"
-else:
-    template_name = "wagtail_footnotes/admin/footnotes_modal_legacy.html"
+template_name = "wagtail_footnotes/admin/footnotes_modal.html"
+
 
 urlpatterns = [
     path(

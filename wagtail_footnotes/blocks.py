@@ -2,18 +2,8 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-
-try:
-    from wagtail.blocks import RichTextBlock
-except ImportError:
-    # Wagtail<3.0
-    from wagtail.core.blocks import RichTextBlock
-
-try:
-    from wagtail.models import Page
-except ImportError:
-    from wagtail.core.models import Page
-
+from wagtail.blocks import RichTextBlock
+from wagtail.models import Page
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
 
@@ -46,7 +36,9 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         page = new_context["page"]
         if not hasattr(page, "footnotes_list"):
             page.footnotes_list = []
-        self.footnotes = {str(footnote.uuid): footnote for footnote in page.footnotes.all()}
+        self.footnotes = {
+            str(footnote.uuid): footnote for footnote in page.footnotes.all()
+        }
 
         def replace_tag(match):
             try:
