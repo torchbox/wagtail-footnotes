@@ -11,6 +11,7 @@ class TestHooks(TestCase):
         props = {"footnote": "1", "children": ""}
         dom = footnotes_entity_decorator(props)
         self.assertEqual(dom.type, "footnote")
+        self.assertEqual(dom.children, [])
 
     def test_footnotes_entity_decorator_with_children(self):
         props = {"footnote": "1", "children": "This is a footnote"}
