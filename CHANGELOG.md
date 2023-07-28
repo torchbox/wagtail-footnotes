@@ -1,8 +1,14 @@
 # Wagtail Footnotes Changelog
 
-## Unreleased
+## 0.10.0
 
-- Add a test app and testing. Also add some development helpers and documentation.
+- Add tests. (https://github.com/torchbox/wagtail-footnotes/pull/49) @nickmoreton
+  Includes tox 4, coverage configuration.
+- Drop support for Python 3.7 and Wagtail < 4.1. (https://github.com/torchbox/wagtail-footnotes/pull/49) @nickmoreton
+- Add the coverage report to the GitHub Actions summary. @zerolab
+- Switch to using [ruff](https://beta.ruff.rs/docs/) for linting. (https://github.com/torchbox/wagtail-footnotes/pull/52) @zerolab
+- Switched to using PyPI trusted publishing (https://github.com/torchbox/wagtail-footnotes/pull/53) @zerolab
+- Switched to using [flit](https://flit.pypa.io/en/latest/) for packaging (https://github.com/torchbox/wagtail-footnotes/pull/54) @zerolab
 
 ## 0.9.0
 
