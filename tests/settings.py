@@ -31,20 +31,13 @@ ALLOWED_HOSTS = ["localhost", "testserver"]
 INSTALLED_APPS = [
     "wagtail_footnotes",
     "tests",
-    "wagtail.contrib.search_promotions",
-    "wagtail.contrib.forms",
-    "wagtail.contrib.redirects",
-    "wagtail.embeds",
     "wagtail.users",
     "wagtail.snippets",
     "wagtail.documents",
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
-    "wagtail.api.v2",
     "wagtail.contrib.modeladmin",
-    "wagtail.contrib.routable_page",
-    "wagtail.contrib.styleguide",
     "wagtail.sites",
     "wagtail",
     "taggit",
@@ -55,7 +48,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sitemaps",
 ]
 
 MIDDLEWARE = [
