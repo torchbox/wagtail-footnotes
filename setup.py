@@ -35,7 +35,6 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -52,8 +51,8 @@ setup(
     install_requires=["wagtail>=4.1"],
     extras_require={
         "testing": [
-            "black==23.1.0",
-            "flake8==5.0.1",
+            "black==23.7.0",
+            "flake8==6.0.0",
             "isort==5.12.0",
             "pre-commit==2.20.0",
             "tox==3.26.0",
