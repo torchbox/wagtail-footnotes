@@ -21,14 +21,16 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{env.PYTHON_LATEST}}
+          cache: "pip"
+          cache-dependency-path: "pyproject.toml"
 
       - name: ⬇️ Install dependencies
         run: |
-          python -Im pip install --upgrade pip
-          python -Im pip install wheel
+          python -Im pip install flit
+          python -Im flit install --symlink
 
       - name: 🏗️ Build
-        run: python setup.py sdist bdist_wheel
+        run: python -Im flit build
 
       - uses: actions/upload-artifact@v3
         with:

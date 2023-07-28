@@ -51,10 +51,11 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: 📦 Install dependencies
         run: |
-          python -Im pip install tox tox-gh-actions wheel
+          python -Im pip install tox tox-gh-actions flit
+          python -Im flit install --symlink
 
       - name: 🏗️ Build wheel
-        run: python setup.py bdist_wheel
+        run: python -Im flit build --format wheel
 
       - name: 🧪 Run tox targets for Python ${{ matrix.python-version }}
         run: tox --installpkg ./dist/*.whl
