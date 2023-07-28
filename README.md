@@ -1,5 +1,9 @@
 # Wagtail Footnotes
 
+[![PyPI](https://img.shields.io/pypi/v/wagtail-footnotes.svg)](https://pypi.org/project/wagtail-footnotes/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/wagtail-footnotes.svg)](https://pypi.org/project/wagtail-footnotes/)
+[![Build Status](https://github.com/torchbox/wagtail-footnotes/workflows/CI/badge.svg)](https://github.com/torchbox/wagtail-footnotes/actions)
+
 Add footnotes functionality to your Wagtail project.
 
 ## Usage
