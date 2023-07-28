@@ -48,6 +48,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -Im pip install --upgrade pip
-          python -Im pip install tox tox-gh-actions
-      - name: Test with tox
-        run: tox
+          python -Im pip install tox tox-gh-actions wheel
+
+      - name: 🏗️ Build wheel
+        run: python setup.py bdist_wheel
+
+      - name: 🧪 Run tox targets for Python ${{ matrix.python-version }}
+        run: tox --installpkg ./dist/*.whl
