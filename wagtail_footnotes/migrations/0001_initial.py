@@ -3,6 +3,7 @@
 import django.db.models.deletion
 import modelcluster.fields
 import wagtail.fields as wagtail_fields
+
 from django.db import migrations, models
 
 import wagtail_footnotes.fields

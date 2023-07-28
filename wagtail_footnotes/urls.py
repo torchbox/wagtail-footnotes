@@ -1,13 +1,13 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-template_name = "wagtail_footnotes/admin/footnotes_modal.html"
-
 
 urlpatterns = [
     path(
         "footnotes_modal/",
-        TemplateView.as_view(template_name=template_name),
+        TemplateView.as_view(
+            template_name="wagtail_footnotes/admin/footnotes_modal.html"
+        ),
         name="footnotes-modal",
     )
 ]

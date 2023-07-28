@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from wagtail.blocks import RichTextBlock
 from wagtail.models import Page
 
+
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
 
 
@@ -48,7 +49,8 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             else:
                 return f'<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
 
-        return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))
+        # note: we return safe html
+        return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))  # noqa: S308
 
     def render(self, value, context=None):
         if not self.get_template(context=context):
