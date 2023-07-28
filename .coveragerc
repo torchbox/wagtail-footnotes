@@ -1,5 +1,0 @@
-[run]
-branch = True
-include = wagtail_footnotes/*
-omit = */migrations/*,*/test/*
-
