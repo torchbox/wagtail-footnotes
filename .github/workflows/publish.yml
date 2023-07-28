@@ -11,27 +11,44 @@ env:
   PYTHON_LATEST: "3.11"
 
 jobs:
-  build_and_publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{env.PYTHON_LATEST}}
 
-      - name: Install dependencies
+      - name: ⬇️ Install dependencies
         run: |
           python -Im pip install --upgrade pip
           python -Im pip install wheel
-      - name: Build
+
+      - name: 🏗️ Build
         run: python setup.py sdist bdist_wheel
 
-      - name: Publish to PyPI
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./dist
+
+  # https://docs.pypi.org/trusted-publishers/using-a-publisher/
+  pypi-publish:
+    needs: build
+    environment: 'release'
+
+    name: ⬆️ Upload release to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      # Mandatory for trusted publishing
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v3
+
+      - name: 🚀 Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: '__token__'
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: artifact/
+          print-hash: true
