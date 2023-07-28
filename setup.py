@@ -51,10 +51,7 @@ setup(
     install_requires=["wagtail>=4.1"],
     extras_require={
         "testing": [
-            "black==23.7.0",
-            "flake8==6.0.0",
-            "isort==5.12.0",
-            "pre-commit==2.20.0",
+            "pre-commit>=3.3.0,<4",
             "tox==3.26.0",
         ],
     },

@@ -1,27 +1,46 @@
+ci:
+  autofix_prs: false
+
+default_language_version:
+  python: python3.11
+
 repos:
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
     hooks:
-      - id: isort
+    - id: check-added-large-files
+    - id: check-case-conflict
+    - id: check-json
+    - id: check-merge-conflict
+    - id: check-symlinks
+    - id: check-toml
+    - id: check-yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:
       - id: black
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 'v0.0.280'
     hooks:
-      - id: flake8
-  - repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.8
+      - id: ruff
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: 1.15.0
     hooks:
-        - id: pymarkdown
-          args:
-              - --disable-rules
-              - line-length
-              - scan
+      - id: blacken-docs
+        additional_dependencies: [black==23.7.0]
   - repo: https://github.com/adamchainz/blacken-docs
     rev: v1.12.1
     hooks:
       - id: blacken-docs
         additional_dependencies:
           - black==23.7.0
+  - repo: https://github.com/jackdewinter/pymarkdown
+    rev: v0.9.12
+    hooks:
+        - id: pymarkdown
+          args:
+              - --disable-rules
+              - line-length
+              - scan
