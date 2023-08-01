@@ -67,3 +67,54 @@ Make and run migrations:
   - This is likely because the URL in the JS does not match the URL of the footnotes view. Check the URL in `wagtail_footnotes/static/footnotes/js/footnotes.js` matches the URL you set.
 - `NoneType` error when rendering page.
   - Make sure you are rendering the field in the template using `{% include_block page.field_name %}`
+
+## Contributing
+
+All contributions are welcome!
+
+### Install
+
+To make changes to this project, first clone this repository:
+
+```sh
+git clone git@github.com:torchbox/wagtail-footnotes.git
+cd wagtail-footnotes
+```
+
+With your preferred virtualenv activated, install testing dependencies:
+
+```sh
+pip install -e '.[testing]' -U
+```
+
+### pre-commit
+
+Note that this project uses [pre-commit](https://github.com/pre-commit/pre-commit). To set up locally:
+
+```shell
+$ pip install pre-commit
+# initialize pre-commit
+$ pre-commit install
+# Optional, run all checks once for this, then the checks will run only on the changed files
+$ pre-commit run --all-files
+```
+
+### How to run tests
+
+To run all tests in all environments:
+
+```sh
+tox
+```
+
+To run tests for a specific environment:
+
+```shell
+tox -e python3.11-django4.2-wagtail5.0
+```
+
+To run a single test method in a specific environment:
+
+```shell
+tox -e python3.11-django4.2-wagtail5.0 -- tests.test.test_blocks.TestBlocks.test_block_with_features
+```
