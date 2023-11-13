@@ -53,7 +53,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))  # noqa: S308
 
     def render(self, value, context=None):
-        if not self.get_template(context=context):
+        if not self.get_template(value=value, context=context):
             return self.render_basic(value, context=context)
 
         html = super().render(value, context=context)
