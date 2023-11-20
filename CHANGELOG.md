@@ -1,5 +1,10 @@
 # Wagtail Footnotes Changelog
 
+## Unreleased
+
+- Add support for Wagtail 5.2
+- Add Wagtail 5.2 and Python 3.12 in test matrices @katdom13
+
 ## 0.10.0
 
 - Add tests. (https://github.com/torchbox/wagtail-footnotes/pull/49) @nickmoreton
