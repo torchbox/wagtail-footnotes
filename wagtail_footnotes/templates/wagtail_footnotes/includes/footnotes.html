@@ -1,4 +1,5 @@
 {% load wagtailcore_tags %}
+{% load wagtailfootnotes_tags %}
 
 {% if page.footnotes_list %}
     <div class="footnotes" id="footnotes">
@@ -8,8 +9,23 @@
         <ol>
             {% for footnote in page.footnotes_list %}
                 <li id="footnote-{{ forloop.counter }}">
-                    [{{ forloop.counter }}] {{ footnote.text|richtext }}
-                    <a href="#footnote-source-{{ forloop.counter }}" aria-label="Back to content">↩</a>
+                    {% with reference_ids=page|get_reference_ids:footnote.uuid num=reference_ids|length %}
+                        {% if num == 1 %}{# If there is only a single reference, simply link the return icon back to it #}
+                            <a href="#{{ reference_ids.0 }}" aria-label="Back to content">
+                                ↩
+                            </a>
+                        {% else %}
+                            ↩
+                            {% for reference_id in reference_ids %}
+                                <a href="#{{ reference_id }}" aria-label="Back to content">
+                                    <sup>{# Display a 1-indexed counter for each of the references to this footnote #}
+                                        {{ forloop.counter }}
+                                    </sup>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    {{ footnote.text|richtext }}
                 </li>
             {% endfor %}
         </ol>
