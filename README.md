@@ -61,6 +61,10 @@ Make and run migrations:
   - Default: `["bold", "italic", "link"]`
   - Use this to update a list of Rich Text features allowed in the footnote text.
 
+ - `WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE`
+   - Default: `<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>`
+   - Use this to customize the markup for footnote references appearing in frontend.
+
 ## Common issues
 
 - I click on the `Fn` button in the editor and it stops working
