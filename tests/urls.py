@@ -17,4 +17,5 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("footnotes/", include(footnotes_urls)),
     path("", include(wagtail_urls)),
+    prefix_default_language=False,
 )
