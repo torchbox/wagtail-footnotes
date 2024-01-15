@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail.contrib.modeladmin",
+    "wagtail.contrib.simple_translation",
+    "wagtail.contrib.redirects",
     "wagtail.sites",
     "wagtail",
     "taggit",
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -111,6 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/stable/topics/i18n/
 
 USE_TZ = True
+
+USE_I18N = True
+WAGTAIL_I18N_ENABLED = True
+LANGUAGE_CODE = "en"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/stable/howto/static-files/
