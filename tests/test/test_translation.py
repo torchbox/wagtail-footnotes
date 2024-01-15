@@ -25,48 +25,51 @@ from ..models import TestPageStreamField
     ],
 )
 class TestSubmitPageTranslationView(WagtailTestUtils, TestCase):
-    def setUp(self):
-        self.en_locale = Locale.objects.first()
-        self.fr_locale = Locale.objects.create(language_code="fr")
-        self.de_locale = Locale.objects.create(language_code="de")
+    @classmethod
+    def setUpTestData(cls):
+        cls.en_locale = Locale.objects.first()
+        cls.fr_locale = Locale.objects.create(language_code="fr")
+        cls.de_locale = Locale.objects.create(language_code="de")
 
-        self.en_homepage = Page.objects.get(title="Welcome to your new Wagtail site!")
-        self.fr_homepage = self.en_homepage.copy_for_translation(self.fr_locale)
-        self.fr_homepage.save_revision().publish()
-        self.de_homepage = self.en_homepage.copy_for_translation(self.de_locale)
-        self.de_homepage.save_revision().publish()
+        cls.en_homepage = Page.objects.get(title="Welcome to your new Wagtail site!")
+        cls.fr_homepage = cls.en_homepage.copy_for_translation(cls.fr_locale)
+        cls.fr_homepage.save_revision().publish()
+        cls.de_homepage = cls.en_homepage.copy_for_translation(cls.de_locale)
+        cls.de_homepage.save_revision().publish()
 
-        self.uuid = "f291a4b7-5ac5-4030-b341-b1993efb2ad2"
-        self.en_test_page = TestPageStreamField(
+        cls.uuid = "f291a4b7-5ac5-4030-b341-b1993efb2ad2"
+        cls.en_test_page = TestPageStreamField(
             title="Test Page With Footnote",
             slug="test-page-with-footnote",
             body=json.dumps(
                 [
                     {
                         "type": "paragraph",
-                        "value": f'<p>This is a paragraph with a footnote. <footnote id="{self.uuid}">1</footnote></p>',
+                        "value": f'<p>This is a paragraph with a footnote. <footnote id="{cls.uuid}">1</footnote></p>',
                     },
                 ]
             ),
         )
-        self.en_homepage.add_child(instance=self.en_test_page)
-        self.en_test_page.save_revision().publish()
-        self.en_footnote = Footnote.objects.create(
-            page=self.en_test_page,
-            uuid=self.uuid,
+        cls.en_homepage.add_child(instance=cls.en_test_page)
+        cls.en_test_page.save_revision().publish()
+        cls.en_footnote = Footnote.objects.create(
+            page=cls.en_test_page,
+            uuid=cls.uuid,
             text="This is a footnote",
         )
-
-    def test_translating_page_translates_footnote(self):
-        url = reverse(
-            "simple_translation:submit_page_translation", args=(self.en_test_page.id,)
+        cls.url = reverse(
+            "simple_translation:submit_page_translation", args=(cls.en_test_page.id,)
         )
+
+    def setUp(self):
+        super().setUp()
         self.login()
 
-        de = Locale.objects.get(language_code="de").id
-        fr = Locale.objects.get(language_code="fr").id
+    def test_translating_page_translates_footnote(self):
+        de = self.de_locale.id
+        fr = self.fr_locale.id
         data = {"locales": [de, fr], "include_subtree": True}
-        self.client.post(url, data, follow=True)
+        self.client.post(self.url, data, follow=True)
 
         de_footnote = self.en_footnote.get_translation(de)
         self.assertEqual(de_footnote.text, self.en_footnote.text)
@@ -82,7 +85,7 @@ class TestSubmitPageTranslationView(WagtailTestUtils, TestCase):
 
         # Can also change the text:
         fr_footnote.text = "This is a French translated footnote"
-        fr_footnote.save()
+        fr_footnote.save(update_fields=["text"])
         fr_footnote.refresh_from_db()
         en_footnote = self.en_footnote
         en_footnote.refresh_from_db()
@@ -90,14 +93,9 @@ class TestSubmitPageTranslationView(WagtailTestUtils, TestCase):
         self.assertNotEqual(fr_footnote.text, en_footnote.text)
 
     def test_translated_page_shows_translated_footnote(self):
-        url = reverse(
-            "simple_translation:submit_page_translation", args=(self.en_test_page.id,)
-        )
-        self.login()
-
-        fr = Locale.objects.get(language_code="fr").id
+        fr = self.fr_locale.id
         data = {"locales": [fr], "include_subtree": True}
-        response = self.client.post(url, data, follow=True)
+        response = self.client.post(self.url, data, follow=True)
 
         fr_test_page = self.en_test_page.get_translation(fr)
 
