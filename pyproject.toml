@@ -45,6 +45,7 @@ testing = [
     "tox>=4.6.4,<5",
     "ruff==0.3.7",
     "coverage[toml]>=7.2,<8.0",
+    "wagtail-modeladmin>=2.0.0",
 ]
 
 [project.urls]
