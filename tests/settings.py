@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 
 import os
 
+from wagtail import VERSION as WAGTAIL_VERSION
+
 
 # Build paths inside the project like this: os.path.join(PROJECT_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +40,7 @@ INSTALLED_APPS = [
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
-    "wagtail.contrib.modeladmin",
+    "wagtail_modeladmin" if WAGTAIL_VERSION >= (5, 1) else "wagtail.contrib.modeladmin",
     "wagtail.sites",
     "wagtail",
     "taggit",

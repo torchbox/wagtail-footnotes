@@ -46,6 +46,7 @@ testing = [
     "black==23.7.0",
     "ruff==0.0.280",
     "coverage[toml]>=7.2,<8.0",
+    "wagtail-modeladmin>=2.0.0",
 ]
 
 [project.urls]
