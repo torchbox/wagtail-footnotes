@@ -2,7 +2,6 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.blocks import RichTextBlock
 from wagtail.models import Page
 
@@ -54,9 +53,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))  # noqa: S308
 
     def render(self, value, context=None):
-        kwargs = {"value": value} if WAGTAIL_VERSION >= (5, 2) else {}
-
-        if not self.get_template(context=context, **kwargs):
+        if not self.get_template(value=value, context=context):
             return self.render_basic(value, context=context)
 
         html = super().render(value, context=context)
