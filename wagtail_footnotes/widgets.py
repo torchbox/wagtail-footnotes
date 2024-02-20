@@ -3,6 +3,7 @@ from wagtail import VERSION as WAGTAIL_VERSION
 
 
 if WAGTAIL_VERSION and WAGTAIL_VERSION >= (6, 0):
+    from django.forms import Media
     from django.utils.safestring import mark_safe
 
     class ReadonlyUUIDInput(HiddenInput):
@@ -16,7 +17,7 @@ if WAGTAIL_VERSION and WAGTAIL_VERSION >= (6, 0):
             # no point trying to come up with sensible semantics for when 'id' is missing from attrs,
             # so let's make sure it fails early in the process
             try:
-                id_ = attrs["id"]
+                attrs["id"]
             except (KeyError, TypeError) as exc:
                 raise TypeError(
                     "ReadonlyUUIDInput cannot be rendered without an 'id' attribute"
@@ -24,9 +25,7 @@ if WAGTAIL_VERSION and WAGTAIL_VERSION >= (6, 0):
 
             widget_html = self.render_html(name, value, attrs)
 
-            js = self.render_js_init(id_, name, value)
-            out = f"{widget_html}<script>{js}</script>"
-            return mark_safe(out)  # noqa: S308
+            return mark_safe(widget_html)  # noqa: S308
 
         def render_html(self, name, value, attrs):
             """Render the HTML (non-JS) portion of the field markup"""
@@ -35,8 +34,14 @@ if WAGTAIL_VERSION and WAGTAIL_VERSION >= (6, 0):
             shown = f'<div id="{attrs["id"]}_display-value" style="padding-top: 1.2em;">{display_value}</div>'
             return shown + hidden
 
-        def render_js_init(self, id_, name, value):
-            return f'setUUID("{id_}");'
+        def build_attrs(self, *args, **kwargs):
+            attrs = super().build_attrs(*args, **kwargs)
+            attrs["data-controller"] = "read-only-uuid"
+            return attrs
+
+        @property
+        def media(self):
+            return Media(js=["footnotes/js/read-only-uuid-controller.js"])
 
 else:
     from wagtail.utils.widgets import WidgetWithScript
