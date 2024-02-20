@@ -2,10 +2,9 @@
 
 ## Unreleased
 
-- Add support for Wagtail 5.2
-- Add Wagtail 5.2 and Python 3.12 in test matrices @katdom13
-- Add support for Wagtail 6.0 by @katdom13
+- Add support for Wagtail 6.0 @katdom13
 - Add support for Django 5.0 by @katdom13
+- Add compatibility tests for Wagtail 6.0 and Python 3.12 @katdom13
 
 ## 0.10.0
 
