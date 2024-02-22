@@ -34,7 +34,7 @@ classifiers = [
 dynamic = ["version"]  # will read __version__ from wagtail_footnotes/__init__.py
 requires-python = ">=3.8"
 dependencies = [
-    "Wagtail>=4.1",
+    "Wagtail>=5.2",
     "Django>=3.2",
 ]
 
