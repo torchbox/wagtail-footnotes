@@ -51,7 +51,9 @@ class TestFunctional(TestCase):
         )
 
         self.admin_user = User.objects.create_superuser(
-            username="admin", email="", password="password"  # noqa: S106
+            username="admin",
+            email="",
+            password="password",  # noqa: S106
         )
 
     def test_no_footnote(self):
