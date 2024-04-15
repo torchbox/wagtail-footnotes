@@ -54,7 +54,7 @@ class InformationPage(Page):
 
 Make and run migrations:
 
-```bash
+```shell
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -65,10 +65,10 @@ Update your page templates to include `{% include "wagtail_footnotes/includes/fo
 
 ### Using footnotes in `RichTextField`
 
-Update any `RichTextField`s that you want to add footnotes feature. 
+Update any `RichTextField`s that you want to add footnotes feature.
 Add `"footnotes"` to the `features` argument for each `RichTextField` that you want to have this functionality. For instance:
 
-```
+```python
 class InformationPage(Page):
     body = RichTextField(
         features=[
@@ -104,7 +104,7 @@ class MyPage(Page):
 
 ### Adding footnotes as a global default
 
-You might want to simply have all RichText editors display footnotes. But remember that you will need the footnotes `InlinePanel` added 
+You might want to simply have all RichText editors display footnotes. But remember that you will need the footnotes `InlinePanel` added
 on all your Page models for the footnotes functionality to be enabled.
 
 ```python
@@ -146,7 +146,7 @@ cd wagtail-footnotes
 
 With your preferred virtualenv activated, install testing dependencies:
 
-```sh
+```shell
 python -m pip install -e '.[testing]' -U
 ```
 
