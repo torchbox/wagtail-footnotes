@@ -126,7 +126,7 @@ WAGTAILADMIN_RICH_TEXT_EDITORS = {
 
 ## 🌍 Internationalisation
 
-Wagtail Footnotes can be translated. Note that in a multi-lingual setup, the URL setup for footnotes 
+Wagtail Footnotes can be translated. Note that in a multi-lingual setup, the URL setup for footnotes
 needs to be in a `i18n_patterns()` call with `prefix_default_language=False`:
 
 ```python
