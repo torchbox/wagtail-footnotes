@@ -2,7 +2,7 @@ from django.forms import HiddenInput
 from wagtail import VERSION as WAGTAIL_VERSION
 
 
-if WAGTAIL_VERSION and WAGTAIL_VERSION >= (6, 0):
+if WAGTAIL_VERSION >= (6, 0):
     from django.forms import Media
     from django.utils.safestring import mark_safe
 
