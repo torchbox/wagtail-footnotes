@@ -1,3 +1,4 @@
+{% load i18n %}
 {% comment %}
     This template is used in Wagtail CMS
 {% endcomment %}
@@ -6,40 +7,45 @@
         <div class="modal-content">
             <button type="button" class="button close button--icon text-replace" data-dismiss="modal"><svg class="icon icon-cross" aria-hidden="true"><use href="#icon-cross"></use></svg>Close</button>
             <div class="modal-body">
-
                 <header class="w-header w-header--merged">
                     <div class="row">
                         <div class="left">
                             <div class="col">
-                                <h1 class="w-header__title">Choose a footnote</h1>
+                                <h1 class="header-title w-header__title">{% translate "Choose a footnote" %}</h1>
                             </div>
 
-                            </div>
-                            <div class="right">
+                            <div class="right"></div>
                         </div>
                     </div>
                 </header>
 
                 <div class="w-tabs" data-tabs="" data-tabs-disable-url="">
-                    <div class="w-tabs__wrapper w-overflow-hidden">
-                        <div role="tablist" class="w-tabs__list w-w-full"><!-- intentionally empty to get some top padding --></div>
-                    </div>
+                    <div class="w-tabs__wrapper"></div>
                     <div class="tab-content">
                         <div class="w-tabs__panel">
-                            <h2>Footnotes</h2>
-                            <p>To add a new footnote, close this window and scroll to the "FOOTNOTES" section at bottom of the page.</p>
+                            <h2>{% translate "Footnotes" %}</h2>
+                            <p>
+                                {% blocktranslate trimmed %}
+                                    To add a new footnote, close this window and scroll to the "Footnotes" section at bottom of the page.
+                                {% endblocktranslate %}
+                            </p>
+
                             <table id="footnotes-listing" class="listing">
                                 <thead>
                                     <tr>
-                                        <th>Text</th>
-                                        <th>ID</th>
+                                        <th>{% translate "Text" %}</th>
+                                        <th>{% translate "ID" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
-                            <p>Footnotes will appear with arbitrary numbers here in the editor. In the published page, and in previews, their numbering will be numerical and ordered.</p>
+
+                            <p>
+                                {% blocktranslate trimmed %}
+                                    Footnotes will appear with arbitrary numbers here in the editor. On the published page, and in previews, their numbering will be numerical and ordered.
+                                {% endblocktranslate %}
+                            </p>
                         </div>
                     </div>
                 </div>
