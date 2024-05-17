@@ -124,6 +124,36 @@ WAGTAILADMIN_RICH_TEXT_EDITORS = {
   - Default: `["bold", "italic", "link"]`
   - Use this to update a list of Rich Text features allowed in the footnote text.
 
+## 🌍 Internationalisation
+
+Wagtail Footnotes can be translated. Note that in a multi-lingual setup, the URL setup for footnotes 
+needs to be in a `i18n_patterns()` call with `prefix_default_language=False`:
+
+```python
+# urls.py
+
+urlpatterns += i18n_patterns(
+    path("footnotes/", include(footnotes_urls)),
+    # ...
+    path("", include(wagtail_urls)),
+    prefix_default_language=False,
+)
+```
+
+or outside `i18n_patterns()`:
+
+```python
+# urls.py
+
+urlpattherns += [
+    path("footnotes/", include(footnotes_urls)),
+]
+urlpatterns += i18n_patterns(
+    # ...
+    path("", include(wagtail_urls)),
+)
+```
+
 ## 💡 Common issues
 
 - I click on the `Fn` button in the editor and it stops working
