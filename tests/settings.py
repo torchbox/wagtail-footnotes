@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
+    "wagtail_modeladmin",
     "wagtail.sites",
     "wagtail",
     "taggit",
