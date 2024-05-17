@@ -1,15 +1,15 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags i18n %}
 
 {% if page.footnotes_list %}
     <div class="footnotes" id="footnotes">
         <h2 id="footnote-label">
-            Footnotes
+            {% translate "Foonotes" %}
         </h2>
         <ol>
             {% for footnote in page.footnotes_list %}
                 <li id="footnote-{{ forloop.counter }}">
                     [{{ forloop.counter }}] {{ footnote.text|richtext }}
-                    <a href="#footnote-source-{{ forloop.counter }}" aria-label="Back to content">↩</a>
+                    <a href="#footnote-source-{{ forloop.counter }}" aria-label="{% translate "Back to content" %}">↩</a>
                 </li>
             {% endfor %}
         </ol>
