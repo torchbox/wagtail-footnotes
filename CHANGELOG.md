@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.11.0
+
+- Improve README @benjaoming
 - Drop support for Wagtail < 5.2 @katdom13
 - Add support for Wagtail 6.0/6.1, Django 5.0 and Python 3.12 @katdom13
 - Make footnotes translatable @jhonatan-lopes, and make the package strings translatable @zerolab
