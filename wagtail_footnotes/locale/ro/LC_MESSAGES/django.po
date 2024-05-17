@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-17 09:06-0500\n"
-"PO-Revision-Date: 2024-05-17 15:23+0100\n"
+"POT-Creation-Date: 2024-05-17 09:52-0500\n"
+"PO-Revision-Date: 2024-05-17 15:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ro\n"
@@ -19,6 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
 "n%100<=19) ? 1 : 2);\n"
 "X-Generator: Poedit 3.4.4\n"
+
+#: models.py:23
+msgid "The ID of the footnote is shown in the rich text editor for reference."
+msgstr ""
+"ID-ul notei de subsol este afișat în editorul de text ca punct de referință."
 
 #: templates/wagtail_footnotes/admin/footnotes_modal.html:14
 msgid "Choose a footnote"

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
@@ -19,8 +20,9 @@ class Footnote(TranslatableMixin, models.Model):
     page = ParentalKey("wagtailcore.Page", related_name="footnotes")
     uuid = CustomUUIDField(
         verbose_name="ID",
-        help_text="The ID of the footnote is shown in the rich text editor for "
-        "reference.",
+        help_text=_(
+            "The ID of the footnote is shown in the rich text editor for " "reference."
+        ),
     )
     text = RichTextField(
         features=getattr(
