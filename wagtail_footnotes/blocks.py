@@ -1,6 +1,8 @@
 import re
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from wagtail.blocks import RichTextBlock
 from wagtail.models import Page
@@ -25,6 +27,15 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         if "footnotes" not in self.features:
             self.features.append("footnotes")
 
+    def render_footnote_tag(self, index):
+        template_name = getattr(
+            settings,
+            "WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE",
+            "wagtail_footnotes/includes/footnote_reference.html",
+        )
+        template = get_template(template_name)
+        return template.render({"index": index})
+
     def replace_footnote_tags(self, value, html, context=None):
         if context is None:
             new_context = self.get_context(value)
@@ -47,7 +58,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             except (KeyError, ValidationError):
                 return ""
             else:
-                return f'<a href="#footnote-{index}" id="footnote-source-{index}"><sup>[{index}]</sup></a>'
+                return self.render_footnote_tag(index)
 
         # note: we return safe html
         return mark_safe(FIND_FOOTNOTE_TAG.sub(replace_tag, html))  # noqa: S308

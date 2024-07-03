@@ -124,6 +124,10 @@ WAGTAILADMIN_RICH_TEXT_EDITORS = {
   - Default: `["bold", "italic", "link"]`
   - Use this to update a list of Rich Text features allowed in the footnote text.
 
+- `WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE`
+  - Default: `"wagtail_footnotes/includes/footnote_reference.html"`
+  - Use this to set a template that renders footnote references. The template receives the footnote `index` in its context.
+
 ## 🌍 Internationalisation
 
 Wagtail Footnotes can be translated. Note that in a multi-lingual setup, the URL setup for footnotes
