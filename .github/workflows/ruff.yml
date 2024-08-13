@@ -15,7 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - run: python -Im pip install --user ruff==0.5.0
+    # keep in sync with .pre-commit-config.yaml
+    - run: python -Im pip install --user ruff==0.5.7
 
     - name: Run ruff
       run: ruff check --output-format=github wagtail_footnotes
