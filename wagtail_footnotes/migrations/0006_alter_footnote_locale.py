@@ -7,7 +7,7 @@ from wagtail import VERSION as WAGTAIL_VERSION
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("wagtailcore", "0094_alter_page_locale"),
+        ("wagtailcore", "0078_referenceindex"),
         (
             "wagtail_footnotes",
             "0005_alter_footnote_locale_alter_footnote_translation_key",

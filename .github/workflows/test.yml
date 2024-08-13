@@ -58,7 +58,7 @@ jobs:
         run: python -Im flit build --format wheel
 
       - name: 🧪 Run tox targets for Python ${{ matrix.python }}
-        run: tox --installpkg ./dist/*.whl
+        run: tox  -q --installpkg ./dist/*.whl
 
       - name: ⬆️ Upload coverage data
         uses: actions/upload-artifact@v4
