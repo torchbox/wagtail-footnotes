@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.12.0
+
+- Added support for Wagtail 6.2 (https://github.com/torchbox/wagtail-footnotes/pull/72) @willbarton
+  Note: this adds a backwards-compatible locale verbose_name migration
+- Added ability to customize the footnote reference rendering (https://github.com/torchbox/wagtail-footnotes/pull/70) @willbarton
+  To change the default template (`wagtail_footnotes/includes/footnote_reference.html`), add the `WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE` setting to your template
+
 ## 0.11.0
 
 - Improve README @benjaoming
