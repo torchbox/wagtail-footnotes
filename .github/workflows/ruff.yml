@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - run: python -Im pip install --user ruff
+    - run: python -Im pip install --user ruff==0.5.0
 
     - name: Run ruff
-      run: ruff --output-format=github wagtail_footnotes
+      run: ruff check --output-format=github wagtail_footnotes

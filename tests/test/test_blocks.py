@@ -1,6 +1,6 @@
 import json
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from wagtail import blocks
 from wagtail.fields import StreamBlock
 from wagtail.models import Page
@@ -104,7 +104,7 @@ class TestBlocks(TestCase):
         context = self.test_page_with_footnote.get_context(self.client.get("/"))
         out = rtb.render_basic(value, context=context)
         result = '<p>This is a paragraph with a footnote. <a href="#footnote-1" id="footnote-source-1"><sup>[1]</sup></a></p>'
-        self.assertEqual(out, result)
+        self.assertHTMLEqual(out, result)
 
     def test_block_replace_footnote_render(self):
         rtb = self.test_page_with_footnote.body.stream_block.child_blocks["paragraph"]
@@ -112,4 +112,21 @@ class TestBlocks(TestCase):
         context = self.test_page_with_footnote.get_context(self.client.get("/"))
         out = rtb.render(value, context=context)
         result = '<p>This is a paragraph with a footnote. <a href="#footnote-1" id="footnote-source-1"><sup>[1]</sup></a></p>'
-        self.assertEqual(out, result)
+        self.assertHTMLEqual(out, result)
+
+    def test_render_footnote_tag(self):
+        block = RichTextBlockWithFootnotes()
+        html = block.render_footnote_tag(2)
+        self.assertHTMLEqual(
+            html, '<a href="#footnote-2" id="footnote-source-2"><sup>[2]</sup></a>'
+        )
+
+    @override_settings(
+        WAGTAIL_FOOTNOTES_REFERENCE_TEMPLATE="test/endnote_reference.html"
+    )
+    def test_render_footnote_tag_new_template(self):
+        block = RichTextBlockWithFootnotes()
+        html = block.render_footnote_tag(2)
+        self.assertHTMLEqual(
+            html, '<a href="#endnote-2" id="endnote-source-2"><sup>2</sup></a>'
+        )
