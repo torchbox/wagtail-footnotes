@@ -60,7 +60,7 @@ msgstr ""
 "fi numerică și ordonată."
 
 #: templates/wagtail_footnotes/includes/footnotes.html:6
-msgid "Foonotes"
+msgid "Footnotes"
 msgstr "Note de subsol"
 
 #: templates/wagtail_footnotes/includes/footnotes.html:12
