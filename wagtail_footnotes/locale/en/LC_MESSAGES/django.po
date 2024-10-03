@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 
 #: templates/wagtail_footnotes/includes/footnotes.html:6
-msgid "Foonotes"
+msgid "Footnotes"
 msgstr ""
 
 #: templates/wagtail_footnotes/includes/footnotes.html:12
