@@ -1,16 +1,15 @@
 from django.conf import settings
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
-from wagtail.models import TranslatableMixin
+from wagtail.models import Orderable, TranslatableMixin
 
 from wagtail_footnotes.fields import CustomUUIDField
 from wagtail_footnotes.widgets import ReadonlyUUIDInput
 
 
-class Footnote(TranslatableMixin, models.Model):
+class Footnote(TranslatableMixin, Orderable):
     """
     Footnote has a UUID field which is set using JavaScript on object creation
     so that it is available immediately for hardcoding a reference to the
@@ -32,7 +31,7 @@ class Footnote(TranslatableMixin, models.Model):
 
     panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
 
-    class Meta(TranslatableMixin.Meta):
+    class Meta(TranslatableMixin.Meta, Orderable.Meta):
         unique_together = [("page", "uuid"), ("translation_key", "locale")]
 
     def __str__(self):
