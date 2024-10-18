@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.13.0
+
+- Made the footnotes orderable (https://github.com/torchbox/wagtail-footnotes/pull/74) @willbarton
+- Fixed a typo in source strings (https://github.com/torchbox/wagtail-footnotes/pull/76) @jsma
+
 ## 0.12.0
 
 - Added support for Wagtail 6.2 (https://github.com/torchbox/wagtail-footnotes/pull/72) @willbarton
