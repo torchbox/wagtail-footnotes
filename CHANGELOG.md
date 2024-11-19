@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Update tox testing to include Wagtail 6.3
+- Add tox testing for Django 5.1
+- Drop testing around python 3.8
+
 ## 0.13.0
 
 - Made the footnotes orderable (https://github.com/torchbox/wagtail-footnotes/pull/74) @willbarton
