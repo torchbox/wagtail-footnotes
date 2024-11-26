@@ -2,7 +2,7 @@ ci:
   autofix_prs: false
 
 default_language_version:
-  python: python3.12
+  python: python3.13
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -19,13 +19,13 @@ repos:
     - id: trailing-whitespace
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Keep in sync with .github/workflows/ruff.yml
-    rev: 'v0.7.0'
+    rev: 'v0.8.0'
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
   - repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.24
+    rev: v0.9.25
     hooks:
         - id: pymarkdown
           args:
