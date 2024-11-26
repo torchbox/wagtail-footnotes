@@ -20,28 +20,16 @@ env:
   TOX_TESTENV_PASSENV: FORCE_COLOR
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
   PIP_NO_PYTHON_VERSION_WARNING: "1"
-  PYTHON_LATEST: "3.12"
+  PYTHON_LATEST: "3.13"
 
 
 jobs:
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{env.PYTHON_LATEST}}
-      - uses: pre-commit/action@v3.0.0
-
   tests:
     runs-on: ubuntu-latest
-    needs: lint
     strategy:
       matrix:
-        python: ["3.9", "3.10", "3.11", "3.12"]
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
