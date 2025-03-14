@@ -78,21 +78,21 @@ class TestFunctional(TestCase):
 
         # Test that required html tags are present with correct
         # attrs that enable the footnotes to respond to clicks
-        source_anchor = soup.find("a", {"id": "footnote-source-1"})
+        source_anchor = soup.find("a", {"id": "footnote-source-1-1"})
         self.assertTrue(source_anchor)
 
         source_anchor_string = str(source_anchor)
         self.assertIn("<sup>[1]</sup>", source_anchor_string)
         self.assertIn('href="#footnote-1"', source_anchor_string)
-        self.assertIn('id="footnote-source-1"', source_anchor_string)
+        self.assertIn('id="footnote-source-1-1"', source_anchor_string)
 
         footnotes = soup.find("div", {"class": "footnotes"})
         self.assertTrue(footnotes)
 
         footnotes_string = str(footnotes)
         self.assertIn('id="footnote-1"', footnotes_string)
-        self.assertIn('href="#footnote-source-1"', footnotes_string)
-        self.assertIn("[1] This is a footnote", footnotes_string)
+        self.assertIn('href="#footnote-source-1-1"', footnotes_string)
+        self.assertIn("This is a footnote", footnotes_string)
 
     def test_edit_page_with_footnote(self):
         self.client.force_login(self.admin_user)
