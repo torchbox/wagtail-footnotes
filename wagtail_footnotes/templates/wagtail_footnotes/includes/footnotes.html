@@ -7,10 +7,27 @@
         </h2>
         <ol>
             {% for footnote in page.footnotes_list %}
-                <li id="footnote-{{ forloop.counter }}">
-                    [{{ forloop.counter }}] {{ footnote.text|richtext }}
-                    <a href="#footnote-source-{{ forloop.counter }}" aria-label="{% translate "Back to content" %}">↩</a>
+                {% with footnote_index=forloop.counter %}
+                <li id="footnote-{{ footnote_index }}">
+                    {% if footnote.references|length == 1 %}
+                        {# If there is only a single reference, link the return icon back to it #}
+                        <a href="#footnote-source-{{ footnote_index }}-{{ footnote.references.0 }}" aria-label={% translate "Back to content" %}>
+                            ↩
+                        </a>
+                    {% else %}
+                        ↩
+                        {% for reference_index in footnote.references %}
+                            {# If there are multiple references, generate unique links per reference #}
+                            <a href="#footnote-source-{{ footnote_index }}-{{ reference_index }}" aria-label={% translate "Back to content" %}>
+                                <sup>{# Display a 1-indexed counter for each of the references to this footnote #}
+                                    {{ forloop.counter }}
+                                </sup>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+                    {{ footnote.text|richtext }}
                 </li>
+                {% endwith %}
             {% endfor %}
         </ol>
     </div>
