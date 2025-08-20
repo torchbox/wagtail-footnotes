@@ -8,7 +8,7 @@ from .blocks import CustomBlock
 class TestPageStreamField(Page):
     template = "test/test_page_stream_field.html"
 
-    body = StreamField(CustomBlock(), use_json_field=True)
+    body = StreamField(CustomBlock())
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
