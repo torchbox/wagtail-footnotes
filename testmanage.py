@@ -6,6 +6,13 @@ import shutil
 import sys
 import warnings
 
+
+# The current directory isn't on the path when GitHub Actions / tox run this
+# with 'python -Im coverage run', due to PYTHONSAFEPATH protection.
+# We explicitly add it here as otherwise we can't reach the tests.
+if "." not in sys.path:
+    sys.path.insert(0, ".")
+
 from django.core.management import execute_from_command_line
 
 
