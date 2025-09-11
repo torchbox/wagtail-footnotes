@@ -2,7 +2,6 @@
 import django.db.models.deletion
 
 from django.db import migrations, models
-from wagtail import VERSION as WAGTAIL_VERSION
 
 
 class Migration(migrations.Migration):
@@ -14,19 +13,16 @@ class Migration(migrations.Migration):
         ),
     ]
 
-    operations = []
-
-    if WAGTAIL_VERSION >= (6, 2):
-        operations.append(
-            migrations.AlterField(
-                model_name="footnote",
-                name="locale",
-                field=models.ForeignKey(
-                    editable=False,
-                    on_delete=django.db.models.deletion.PROTECT,
-                    related_name="+",
-                    to="wagtailcore.locale",
-                    verbose_name="locale",
-                ),
-            )
+    operations = [
+        migrations.AlterField(
+            model_name="footnote",
+            name="locale",
+            field=models.ForeignKey(
+                editable=False,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="+",
+                to="wagtailcore.locale",
+                verbose_name="locale",
+            ),
         )
+    ]

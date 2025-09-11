@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-- Update tox testing to include Wagtail 6.3 and 6.4
-- Add tox testing for Django 5.1
+- Remove support for Wagtail <6.3
+- Update tox testing to include Wagtail 6.3, 7.0 and 7.1
+- Add tox testing for Django 5.1 and 5.2, remove testing for Django 5.0 (EOL)
 - Drop testing around python 3.8
 
 ## 0.13.0
