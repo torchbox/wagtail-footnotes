@@ -20,7 +20,7 @@ class Footnote(TranslatableMixin, Orderable):
     uuid = CustomUUIDField(
         verbose_name="ID",
         help_text=_(
-            "The ID of the footnote is shown in the rich text editor for " "reference."
+            "The ID of the footnote is shown in the rich text editor for reference."
         ),
     )
     text = RichTextField(

@@ -40,9 +40,9 @@ dependencies = [
 
 [project.optional-dependencies]
 testing = [
-    "pre-commit>=4",
+    "pre-commit>=4.3",
     "tox>=4.22,<5",
-    "coverage>=7.2,<8.0",
+    "coverage>=7.10.6,<8.0",
     "wagtail-modeladmin>=2.0.0",
 ]
 
