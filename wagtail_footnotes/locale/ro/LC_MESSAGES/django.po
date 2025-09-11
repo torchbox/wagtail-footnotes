@@ -30,6 +30,7 @@ msgid "Choose a footnote"
 msgstr "Alegeți o notă de subsol"
 
 #: templates/wagtail_footnotes/admin/footnotes_modal.html:26
+#: templates/wagtail_footnotes/includes/footnotes.html:6
 msgid "Footnotes"
 msgstr "Note de subsol"
 
@@ -58,10 +59,6 @@ msgstr ""
 "Notele de subsol vor apărea ca un set de numere și cifre aleatorii în "
 "editorul de text. Pe pagina publicată și în previzualizări, numerotarea va "
 "fi numerică și ordonată."
-
-#: templates/wagtail_footnotes/includes/footnotes.html:6
-msgid "Footnotes"
-msgstr "Note de subsol"
 
 #: templates/wagtail_footnotes/includes/footnotes.html:12
 msgid "Back to content"
