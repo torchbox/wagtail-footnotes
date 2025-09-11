@@ -27,6 +27,7 @@ msgid "Choose a footnote"
 msgstr ""
 
 #: templates/wagtail_footnotes/admin/footnotes_modal.html:26
+#: templates/wagtail_footnotes/includes/footnotes.html:6
 msgid "Footnotes"
 msgstr ""
 
@@ -49,10 +50,6 @@ msgid ""
 "Footnotes will appear with arbitrary numbers here in the editor. On the "
 "published page, and in previews, their numbering will be numerical and "
 "ordered."
-msgstr ""
-
-#: templates/wagtail_footnotes/includes/footnotes.html:6
-msgid "Footnotes"
 msgstr ""
 
 #: templates/wagtail_footnotes/includes/footnotes.html:12
