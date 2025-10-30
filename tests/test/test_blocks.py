@@ -38,15 +38,43 @@ class TestBlocks(TestCase):
                 [
                     {
                         "type": "paragraph",
-                        "value": f'<p>This is a paragraph with a footnote. <footnote id="{uuid}">1</footnote></p>',
+                        "value": (
+                            f'<p>This is a paragraph with a footnote. <footnote id="{uuid}">[{uuid[:6]}]</footnote></p>'
+                        ),
                     },
                 ]
             ),
         )
         home_page.add_child(instance=self.test_page_with_footnote)
         self.test_page_with_footnote.save_revision().publish()
-        self.footnote = Footnote.objects.create(
+        Footnote.objects.create(
             page=self.test_page_with_footnote,
+            uuid=uuid,
+            text="This is a footnote",
+        )
+
+        self.test_page_with_multiple_references_to_the_same_footnote = TestPageStreamField(
+            title="Test Page With Multiple References to the Same Footnote",
+            slug="test-page-with-multiple-references-to-the-same-footnote",
+            body=json.dumps(
+                [
+                    {
+                        "type": "paragraph",
+                        "value": (
+                            f'<p>This is a paragraph with a footnote. <footnote id="{uuid}">[{uuid[:6]}]</footnote></p>'
+                            f"<p>This is another paragraph with a reference to the same footnote. "
+                            f'<footnote id="{uuid}">[{uuid[:6]}]</footnote></p>'
+                        ),
+                    },
+                ]
+            ),
+        )
+        home_page.add_child(
+            instance=self.test_page_with_multiple_references_to_the_same_footnote
+        )
+        self.test_page_with_multiple_references_to_the_same_footnote.save_revision().publish()
+        Footnote.objects.create(
+            page=self.test_page_with_multiple_references_to_the_same_footnote,
             uuid=uuid,
             text="This is a footnote",
         )
@@ -98,27 +126,39 @@ class TestBlocks(TestCase):
         html = block.replace_footnote_tags(None, "foo")
         self.assertEqual(html, "foo")
 
-    def test_block_replace_footnote_render_basic(self):
-        rtb = self.test_page_with_footnote.body.stream_block.child_blocks["paragraph"]
-        value = rtb.get_prep_value(self.test_page_with_footnote.body[0].value)
-        context = self.test_page_with_footnote.get_context(self.client.get("/"))
-        out = rtb.render_basic(value, context=context)
-        result = '<p>This is a paragraph with a footnote. <a href="#footnote-1" id="footnote-source-1"><sup>[1]</sup></a></p>'
-        self.assertHTMLEqual(out, result)
-
     def test_block_replace_footnote_render(self):
         rtb = self.test_page_with_footnote.body.stream_block.child_blocks["paragraph"]
         value = rtb.get_prep_value(self.test_page_with_footnote.body[0].value)
         context = self.test_page_with_footnote.get_context(self.client.get("/"))
         out = rtb.render(value, context=context)
-        result = '<p>This is a paragraph with a footnote. <a href="#footnote-1" id="footnote-source-1"><sup>[1]</sup></a></p>'
+        result = (
+            '<p>This is a paragraph with a footnote. <a href="#footnote-1" id="footnote-source-1-1"><sup>[1]</sup></a>'
+            "</p>"
+        )
+        self.assertHTMLEqual(out, result)
+
+    def test_block_replace_footnote_with_multiple_references_render(self):
+        body = self.test_page_with_multiple_references_to_the_same_footnote.body
+        rtb = body.stream_block.child_blocks["paragraph"]
+        value = rtb.get_prep_value(body[0].value)
+        context = (
+            self.test_page_with_multiple_references_to_the_same_footnote.get_context(
+                self.client.get("/")
+            )
+        )
+        out = rtb.render(value, context=context)
+        result = (
+            '<p>This is a paragraph with a footnote. <a href="#footnote-1" id="footnote-source-1-1"><sup>[1]</sup></a>'
+            '</p><p>This is another paragraph with a reference to the same footnote. <a href="#footnote-1" '
+            'id="footnote-source-1-2"><sup>[1]</sup></a></p>'
+        )
         self.assertHTMLEqual(out, result)
 
     def test_render_footnote_tag(self):
         block = RichTextBlockWithFootnotes()
-        html = block.render_footnote_tag(2)
+        html = block.render_footnote_tag(index=2, reference_index=1)
         self.assertHTMLEqual(
-            html, '<a href="#footnote-2" id="footnote-source-2"><sup>[2]</sup></a>'
+            html, '<a href="#footnote-2" id="footnote-source-2-1"><sup>[2]</sup></a>'
         )
 
     @override_settings(
@@ -126,7 +166,7 @@ class TestBlocks(TestCase):
     )
     def test_render_footnote_tag_new_template(self):
         block = RichTextBlockWithFootnotes()
-        html = block.render_footnote_tag(2)
+        html = block.render_footnote_tag(index=2, reference_index=1)
         self.assertHTMLEqual(
-            html, '<a href="#endnote-2" id="endnote-source-2"><sup>2</sup></a>'
+            html, '<a href="#endnote-2" id="endnote-source-2-1"><sup>2</sup></a>'
         )
