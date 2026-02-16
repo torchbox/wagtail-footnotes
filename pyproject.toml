@@ -17,22 +17,22 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Framework :: Django",
     "Framework :: Django :: 4.2",
-    "Framework :: Django :: 5.1",
     "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
     "Framework :: Wagtail",
     "Framework :: Wagtail :: 6",
     "Framework :: Wagtail :: 7",
 ]
 
 dynamic = ["version"]  # will read __version__ from wagtail_footnotes/__init__.py
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "Wagtail>=6.3",
     "Django>=4.2",
@@ -40,10 +40,10 @@ dependencies = [
 
 [project.optional-dependencies]
 testing = [
-    "pre-commit>=4.3",
-    "tox>=4.22,<5",
-    "coverage>=7.10.6,<8.0",
-    "wagtail-modeladmin>=2.0.0",
+    "pre-commit>=4.5",
+    "tox>=4.36,<5",
+    "coverage>=7.12,<8.0",
+    "wagtail-modeladmin>=2.2.0",
 ]
 
 [project.urls]
