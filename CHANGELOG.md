@@ -2,8 +2,8 @@
 
 ## Unreleased
 
-- Remove support for Wagtail <7.0, Python < 3.10
-- Update tox testing to include Wagtail 7.2
+- Remove support for Wagtail 6.4 and 7.1, Python < 3.10
+- Update tox testing to include Wagtail 7.2 and 7.3
 - Include Python 3.14 in testing
 
 ## 0.14.0
