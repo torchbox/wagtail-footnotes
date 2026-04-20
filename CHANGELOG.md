@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Add support for multiple references to the same footnote (https://github.com/torchbox/wagtail-footnotes/pull/90)
+
+  **Breaking change**: The HTML `id` format for in-text footnote reference anchors has changed from
+  `footnote-source-{N}` to `footnote-source-{N}-{M}` (e.g. `footnote-source-1` becomes
+  `footnote-source-1-1`). This applies to all references, including single ones. Sites that target
+  these IDs in CSS, JavaScript, or tests will need to update their selectors.
+
 ## 0.15.0
 
 - Remove support for Wagtail 6.4 and 7.1, Python < 3.10, Django 5.1
