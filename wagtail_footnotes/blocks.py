@@ -56,10 +56,13 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             str(footnote.uuid): footnote for footnote in page.footnotes.all()
         }
 
-        # Patch the page to track the footnotes that are actually referenced in the text, so that they can be rendered
-        # in footnotes.html
+        # Patch the page with `footnotes_list`: the ordered list of Footnote objects actually referenced in the
+        # rich text, used by footnotes.html to render the footnote list at the bottom of the page.
+        # This is distinct from `footnote.references` on each Footnote, which is a list of 1-based reference
+        # indexes tracking each individual in-text occurrence of that footnote (e.g. [1], [1, 2]), used to
+        # render unique back-links from each footnote to its source(s) in the content.
         if not hasattr(page, "footnotes_list"):
-            page.footnotes_list = []
+            page.footnotes_list: list[Footnote] = []
 
         def replace_tag(match):
             footnote_uuid = match.group(1)
@@ -85,8 +88,13 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         return self.replace_footnote_tags(value, html, context=context)
 
     def attach_footnote_to_page(self, footnote_uuid: str, page: Page) -> Footnote:
-        """Finds the Footnote object matching `footnote_uuid`, then modifies it to track how many times it has been
-        referenced, and attaches it to the `page` so the footnote can be rendered in the page template.
+        """Finds the Footnote object matching `footnote_uuid`, then attaches it to `page.footnotes_list` (if not
+        already present) and updates `footnote.references` to record this in-text occurrence.
+
+        `footnote.references` is a list of 1-based indexes, one per in-text occurrence of the footnote
+        (e.g. [1] for a single reference, [1, 2] for two). These indexes are used to generate unique
+        anchor IDs (e.g. ``footnote-source-1-1``, ``footnote-source-1-2``) so each back-link in the
+        footnote list can point to its specific source location in the content.
         """
         # Fetch the unmodified Footnote
         footnote = self.all_footnotes[footnote_uuid]
@@ -94,7 +102,7 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         # If this is the first time the Footnote has been referenced, modify it to track references before appending it
         # to the page
         if footnote not in page.footnotes_list:
-            footnote.references = [1]
+            footnote.references: list[int] = [1]
             page.footnotes_list.append(footnote)
         else:
             # If this Footnote has been processed by a previous reference, fetch the modified Footnote from the page and
