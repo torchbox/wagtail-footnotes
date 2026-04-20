@@ -1,5 +1,7 @@
 import json
 
+from html import unescape
+
 from bs4 import BeautifulSoup as bs4
 from django.test import override_settings
 from django.urls import reverse
@@ -105,7 +107,10 @@ class TestSubmitPageTranslationView(WagtailTestUtils, TestCase):
 
         self.assertIn(
             "The page 'Test Page With Footnote' was successfully created in French",
-            [msg.message for msg in response.context["messages"]],
+            [
+                unescape(str(msg.message)).strip()
+                for msg in response.context["messages"]
+            ],
         )
 
         fr_footnote = self.en_footnote.get_translation(fr)
