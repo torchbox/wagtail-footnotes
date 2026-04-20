@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.15.0
+
 - Remove support for Wagtail 6.4 and 7.1, Python < 3.10, Django 5.1
 - Update tox testing to include Wagtail 7.2 and 7.3, Django 6.0
 - Include Python 3.14 in testing

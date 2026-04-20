@@ -208,11 +208,11 @@ tox
 To run tests for a specific environment:
 
 ```shell
-tox -e python3.13-django5.2-wagtail7.0
+tox -e python3.13-django5.2-wagtail7.3
 ```
 
 To run a single test method in a specific environment:
 
 ```shell
-tox -e python3.13-django5.2-wagtail7.0 -- tests.test.test_blocks.TestBlocks.test_block_with_features
+tox -e python3.13-django5.2-wagtail7.3 -- tests.test.test_blocks.TestBlocks.test_block_with_features
 ```
