@@ -198,12 +198,9 @@ class FootnoteSource extends React.Component {
   }
 }
 
-// --- Feature 2: click [fn] in editor → scroll to footnote panel item ---
-//
-// The Footnote decorator renders each in-text reference as a <sup>. We attach
-// a data-footnote-uuid attribute so that panel-side code (Feature 3) can find
-// these elements by UUID, and an onClick handler that scrolls to the matching
-// footnote panel item when the user clicks the reference in the editor.
+// Renders each in-text footnote reference as a clickable <sup>. Clicking scrolls
+// to the matching footnote panel row. data-footnote-uuid is set so the panel-side
+// back-links can locate this element by UUID.
 const Footnote = (props) => {
   const { entityKey, contentState } = props;
   const data = contentState.getEntity(entityKey).getData();
@@ -240,14 +237,9 @@ const Footnote = (props) => {
   );
 };
 
-// --- Feature 3: "Go to reference" links inside each footnote panel item ---
-//
-// When the edit page loads, each existing inline panel row gets a small set of
-// links that scroll back to the in-text occurrence(s) of that footnote. Because
-// new rows can be added dynamically (via the "Create new footnote" button), we
-// use a MutationObserver to watch for new panels and inject links into them too.
-//
-// We wait for DOMContentLoaded to ensure the inline panel has rendered.
+// Injects "↑ Go to reference" back-links into each footnote inline panel row,
+// positioned just below the short ID. Each link scrolls to the corresponding
+// in-text <sup> in the editor. A MutationObserver handles rows added dynamically.
 document.addEventListener("DOMContentLoaded", function () {
   const panelsContainer = document.getElementById("id_footnotes-FORMS");
   if (!panelsContainer) return; // not on an edit page
@@ -263,8 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const uuid = uuidInput.value;
 
-    // Find all in-text <sup> elements for this footnote.
-    // These are rendered by the Footnote decorator above with data-footnote-uuid.
+    // Find all in-text <sup data-footnote-uuid> elements for this footnote.
     const refs = document.querySelectorAll(`sup[data-footnote-uuid="${uuid}"]`);
     if (!refs.length) return;
 
