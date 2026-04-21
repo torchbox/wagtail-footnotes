@@ -226,24 +226,53 @@ class TestFunctional(TestCase):
         self.assertIn("Cross-block footnote", footnotes_string)
 
     def test_footnotes_modal_contains_create_button(self):
-        """The footnote chooser modal renders the 'Create new footnote' button."""
+        """The footnote chooser modal must render a 'Create new footnote' button.
+
+        Previously users had to close the modal, scroll to the Footnotes panel,
+        add a row there, then reopen the modal to select it — a round-trip that
+        was confusing. The button short-circuits this by letting the user create
+        a footnote directly from the chooser.
+
+        The button's id attribute is load-bearing: footnotes.js selects it via
+        '#footnotes-create-new' to attach the click handler that inserts the
+        Draft.js entity and wires up the new inline panel row.
+        """
         response = self.client.get("/footnotes/footnotes_modal/")
         self.assertEqual(response.status_code, 200)
 
         soup = bs4(response.content, "html.parser")
-
-        # The button must be present and targetable by the JS via its id
         create_btn = soup.find("button", {"id": "footnotes-create-new"})
         self.assertIsNotNone(create_btn)
         self.assertIn("Create new footnote", create_btn.text)
 
     def test_footnotes_modal_no_longer_instructs_manual_scroll(self):
-        """The old 'close this window and scroll down' instruction has been removed."""
+        """The old manual-scroll instruction must be absent from the modal.
+
+        The original modal told users to 'close this window and scroll to the
+        Footnotes section' to add a new footnote. Now that the 'Create new
+        footnote' button handles this automatically, that instruction is
+        misleading and has been removed. This test guards against it being
+        re-introduced.
+        """
+        response = self.client.get("/footnotes/footnotes_modal/")
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "close this window")
+
+    def test_footnotes_modal_does_not_use_w_tabs_controller(self):
+        """The modal must not activate Wagtail's w-tabs Stimulus controller.
+
+        The modal uses w-tabs CSS classes for layout, but the w-tabs Stimulus
+        controller requires a child element with role='tablist' — which the modal
+        doesn't have. If data-controller='w-tabs' is present, Stimulus throws a
+        console error on every modal open. We keep the CSS classes but must not
+        activate the controller.
+        """
         response = self.client.get("/footnotes/footnotes_modal/")
         self.assertEqual(response.status_code, 200)
 
-        # Regression guard: this copy was removed when the button was added
-        self.assertNotContains(response, "close this window")
+        # Check both quote styles to catch either form of the attribute
+        self.assertNotContains(response, 'data-controller="w-tabs"')
+        self.assertNotContains(response, "data-controller='w-tabs'")
 
     def test_edit_page_with_footnote(self):
         self.client.force_login(self.admin_user)
