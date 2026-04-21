@@ -172,16 +172,19 @@ class FootnoteSource extends React.Component {
 
           // Build the row using DOM methods rather than HTML string concatenation
           // to avoid injection issues with footnote text content.
-          const row = $("<tr>").attr("data-uuid", uuid).css({ cursor: "pointer" });
+          const row = $("<tr>").data("uuid", uuid);
           row.append($("<td>").text(text), $("<td>").text(uuid.substring(0, UUID_SHORT_LENGTH)));
           table.append(row);
+        });
 
-          row.on("click", function () {
-            // Use the row reference from closure rather than navigating from
-            // event.target, which varies depending on which child was clicked.
-            insertFootnoteEntity(row[0].dataset.uuid);
+        // Use event delegation rather than per-row listeners — one handler on the
+        // table catches clicks from any row.
+        table.on("click", "tr", function () {
+          const uuid = $(this).data("uuid");
+          if (uuid) {
+            insertFootnoteEntity(uuid);
             $("#footnotes-modal").modal("hide");
-          });
+          }
         });
 
         $("#footnotes-modal").modal("show");
