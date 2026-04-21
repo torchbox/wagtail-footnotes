@@ -1,21 +1,12 @@
-function uuidv4() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-    (
-      c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
-  );
-}
-
 function setUUID(id) {
-  var $input = $("input#" + id);
-  var $displayValue = $("div#" + id + "_display-value");
-  if (!$input.val()) {
-    var uuid = uuidv4();
-    // Set hidden field
-    $input.val(uuid);
-    // Set displayed text
-    $displayValue.html(uuid.substring(0, 6));
+  const input = document.getElementById(id);
+  const displayValue = document.getElementById(`${id}_display-value`);
+  if (input && !input.value) {
+    const uuid = crypto.randomUUID();
+    input.value = uuid;
+    if (displayValue) {
+      displayValue.textContent = uuid.substring(0, 6);
+    }
   }
 }
 
@@ -47,7 +38,7 @@ class FootnoteSource extends React.Component {
       url: "/footnotes/footnotes_modal/",
       success: function (data) {
         $("body").append(data);
-        var table = $("#footnotes-listing tbody");
+        const table = $("#footnotes-listing tbody");
         table.empty();
 
         // --- Shared helper: insert a Draft.js footnote entity at the cursor ---
@@ -64,22 +55,14 @@ class FootnoteSource extends React.Component {
           // The short key is the first 6 chars of the UUID — used as visible text
           // in the editor. On the published page this is replaced by a numbered ref.
           const shortKey = uuid.substring(0, 6);
-          const text = `[${shortKey}]`;
-
           const newContent = Modifier.replaceText(
             content,
             selection,
-            text,
+            `[${shortKey}]`,
             null,
             entityKey
           );
-          const nextState = EditorState.push(
-            editorState,
-            newContent,
-            "insert-characters"
-          );
-
-          onComplete(nextState);
+          onComplete(EditorState.push(editorState, newContent, "insert-characters"));
         }
 
         // --- "Create new footnote" button handler ---
@@ -89,27 +72,23 @@ class FootnoteSource extends React.Component {
         // wire up the new inline panel form row to use that same UUID.
         //
         // We can't do it the other way round (wait for the form row, read its UUID,
-        // then insert the entity) because Draftail may unmount FootnoteSource at any
-        // point after the modal closes, making onComplete() unreliable to call later.
+        // then insert the entity) because Draftail unmounts FootnoteSource after
+        // onComplete() is called, making it unsafe to call later.
         $("#footnotes-create-new").on("click", function () {
-          // Generate the UUID now so we control it from the start
-          const uuid = uuidv4();
+          const uuid = crypto.randomUUID();
 
           // Read the current total form count BEFORE clicking add — the new form
           // row will be assigned this index by Django's formset machinery.
-          const totalFormsInput = document.getElementById(
-            "id_footnotes-TOTAL_FORMS"
-          );
-          const newFormIndex = totalFormsInput
-            ? parseInt(totalFormsInput.value, 10)
-            : 0;
+          const totalFormsInput = document.getElementById("id_footnotes-TOTAL_FORMS");
+          if (!totalFormsInput) return;
+          const newFormIndex = parseInt(totalFormsInput.value, 10);
 
-          // Insert the entity into the rich text editor right now, while
-          // FootnoteSource is still mounted and onComplete() is safe to call.
+          // Insert the entity while FootnoteSource is still mounted and
+          // onComplete() is safe to call.
           insertFootnoteEntity(uuid);
 
           // Remove the modal close handler before hiding so it doesn't fire
-          // onClose() on the (now unmounting) component and cause a double-call.
+          // onClose() on the now-unmounting component.
           $(document.body).off("hidden.bs.modal", modalCloseHandler);
           $("#footnotes-modal").modal("hide");
 
@@ -119,21 +98,12 @@ class FootnoteSource extends React.Component {
           if (!addButton) return;
           addButton.click();
 
-          // Scroll the footnotes panel into view so the user can fill in the text.
-          // The section ID follows Wagtail's InlinePanel naming convention.
-          const footnotesSection = document.querySelector(
-            "#panel-child-content-footnotes-section"
-          );
-          if (footnotesSection) {
-            footnotesSection.scrollIntoView({ behavior: "smooth" });
-          }
-
           // Watch for the new form row's UUID input to appear in the DOM, then
-          // set it to our pre-generated UUID. We know the exact ID because Django
-          // formsets use a predictable index (the old TOTAL_FORMS value).
+          // stamp it with our pre-generated UUID. We know the exact input ID because
+          // Django formsets use a predictable index (the pre-add TOTAL_FORMS value).
           //
-          // We observe document.body (not just the forms container) to avoid
-          // missing the element if Wagtail nests the new row inside wrapper elements.
+          // We observe document.body to avoid missing the element if Wagtail
+          // nests the new row inside wrapper elements.
           const expectedInputId = `id_footnotes-${newFormIndex}-uuid`;
           const expectedDisplayId = `${expectedInputId}_display-value`;
 
@@ -141,20 +111,50 @@ class FootnoteSource extends React.Component {
             const uuidInput = document.getElementById(expectedInputId);
             if (!uuidInput) return; // row not in DOM yet — keep watching
 
-            // Found the input — stop observing immediately
             obs.disconnect();
 
-            // Set our UUID on the hidden input. If setUUID() hasn't run yet,
-            // it will see a non-empty value and skip generating its own UUID.
-            // If setUUID() already ran (and generated a different UUID), we
-            // overwrite it so the form row matches the entity we already inserted.
+            // Stamp our UUID onto the hidden input. If setUUID() hasn't run yet it
+            // will skip (input is non-empty). If it already ran with a different UUID
+            // we overwrite it so the form row matches the entity we inserted.
             uuidInput.value = uuid;
 
-            // Also update the display div so what the user sees matches
             const displayDiv = document.getElementById(expectedDisplayId);
             if (displayDiv) {
               displayDiv.textContent = uuid.substring(0, 6);
             }
+
+            // Scroll to the new row and focus its Draftail editor. Deferred because
+            // onComplete() causes Draftail to refocus the rich text editor — we run
+            // after that so our scroll and focus take effect last.
+            const newRow = uuidInput.closest(".w-panel");
+            if (!newRow) return;
+
+            setTimeout(function () {
+              newRow.scrollIntoView({ behavior: "smooth", block: "center" });
+
+              // The Draftail editor in the new row may not be initialised yet.
+              // Try immediately, and if not ready, observe until it appears.
+              const existingEditor = newRow.querySelector(".public-DraftEditor-content");
+              if (existingEditor) {
+                existingEditor.focus();
+                return;
+              }
+
+              const editorObserver = new MutationObserver(function (_, editorObs) {
+                const editor = newRow.querySelector(".public-DraftEditor-content");
+                if (!editor) return;
+                editorObs.disconnect();
+                clearTimeout(editorObserverTimeout);
+                editor.focus();
+              });
+              editorObserver.observe(newRow, { childList: true, subtree: true });
+
+              // Disconnect after 5s as a leak guard in case the editor never appears
+              const editorObserverTimeout = setTimeout(
+                () => editorObserver.disconnect(),
+                5000
+              );
+            }, 100);
           });
 
           observer.observe(document.body, { childList: true, subtree: true });
@@ -163,26 +163,20 @@ class FootnoteSource extends React.Component {
         // --- Existing footnote rows: build the chooser table ---
         // Reads footnote content and UUIDs from the live inline panel forms
         // and populates the modal table so the user can pick an existing footnote.
-        var live_footnotes = document.querySelectorAll(
-          "#id_footnotes-FORMS .w-panel"
-        );
-        Array.prototype.forEach.call(live_footnotes, function (value) {
-          const text = $(".public-DraftEditor-content", value).text();
-          const uuid = $('input[id*="-uuid"]', value)[0].value;
-          var row = $(
-            "<tr data-uuid=" +
-            uuid +
-            "><td>" +
-            text +
-            "</td><td>" +
-            uuid.substring(0, 6) +
-            "</td></tr>"
-          ).css({ cursor: "pointer" });
+        document.querySelectorAll("#id_footnotes-FORMS .w-panel").forEach(function (panel) {
+          const text = $(".public-DraftEditor-content", panel).text();
+          const uuid = $('input[id*="-uuid"]', panel)[0].value;
+
+          // Build the row using DOM methods rather than HTML string concatenation
+          // to avoid injection issues with footnote text content.
+          const row = $("<tr>").attr("data-uuid", uuid).css({ cursor: "pointer" });
+          row.append($("<td>").text(text), $("<td>").text(uuid.substring(0, 6)));
           table.append(row);
 
-          row.on("click", function (event) {
-            const footnoteUUID = event.target.parentElement.dataset["uuid"];
-            insertFootnoteEntity(footnoteUUID);
+          row.on("click", function () {
+            // Use the row reference from closure rather than navigating from
+            // event.target, which varies depending on which child was clicked.
+            insertFootnoteEntity(row[0].dataset.uuid);
             $("#footnotes-modal").modal("hide");
           });
         });
