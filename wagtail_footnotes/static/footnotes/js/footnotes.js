@@ -305,6 +305,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Initial pass — Stimulus initialises Draftail synchronously before this
+  // handler runs, so sups may already be in the DOM at this point.
+  panelsContainer.querySelectorAll(".w-panel").forEach(injectBackLinks);
+
   // Watch for Draftail to render footnote entities in the main body editor.
   // <sup data-footnote-uuid> elements live outside panelsContainer so won't be
   // caught by the panel observer below — we watch document.body instead and
