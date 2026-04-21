@@ -303,8 +303,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // Append below the panel's content area so it doesn't disrupt existing layout
-    panel.appendChild(container);
+    // Insert immediately after the UUID display div so the back-link sits just
+    // below the footnote's ID — the most natural place to see "where is this used".
+    // Falls back to appending to the panel if the display div isn't found.
+    const displayDiv = document.getElementById(`${uuidInput.id}_display-value`);
+    if (displayDiv) {
+      displayDiv.insertAdjacentElement("afterend", container);
+    } else {
+      panel.appendChild(container);
+    }
   }
 
   // Inject into all panels already in the DOM on page load.
