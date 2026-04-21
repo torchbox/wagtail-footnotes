@@ -305,17 +305,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Inject into all panels already in the DOM on page load.
-  // Deferred so Draftail has time to render <sup data-footnote-uuid> elements
-  // into the main body editor — those elements exist in the document but outside
-  // panelsContainer, so they won't be caught by the observer below.
-  setTimeout(function () {
-    panelsContainer.querySelectorAll(".w-panel").forEach(injectBackLinks);
-  }, 500);
+  // Watch for Draftail to render footnote entities in the main body editor.
+  // <sup data-footnote-uuid> elements live outside panelsContainer so won't be
+  // caught by the panel observer below — we watch document.body instead and
+  // filter to only act when a relevant element appears.
+  const supObserver = new MutationObserver(function (mutations) {
+    const hasNewSup = mutations.some(function (m) {
+      return Array.from(m.addedNodes).some(function (n) {
+        return (
+          n.nodeType === Node.ELEMENT_NODE &&
+          ((n.tagName === "SUP" && n.hasAttribute("data-footnote-uuid")) ||
+            n.querySelector("sup[data-footnote-uuid]") !== null)
+        );
+      });
+    });
 
-  // Watch for new panels added dynamically (e.g. via "Create new footnote")
-  // and inject back-links as soon as each one appears.
-  //
+    if (!hasNewSup) return;
+
+    panelsContainer.querySelectorAll(".w-panel").forEach(injectBackLinks);
+  });
+
+  supObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Watch for new panels added dynamically (e.g. via "Create new footnote").
   // childList-only (no subtree) so this doesn't fire on every keystroke inside
   // the footnote text editors — we only care about panel rows being added/removed.
   const panelObserver = new MutationObserver(function () {
