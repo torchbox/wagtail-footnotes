@@ -24,11 +24,14 @@
                     <div class="tab-content">
                         <div class="w-tabs__panel">
                             <h2>{% translate "Footnotes" %}</h2>
+
                             <p>
-                                {% blocktranslate trimmed %}
-                                    To add a new footnote, close this window and scroll to the "Footnotes" section at bottom of the page.
-                                {% endblocktranslate %}
+                                <button id="footnotes-create-new" type="button" class="button button-secondary">
+                                    {% translate "Create new footnote" %}
+                                </button>
                             </p>
+
+                            <p>{% translate "Or choose an existing footnote:" %}</p>
 
                             <table id="footnotes-listing" class="listing">
                                 <thead>
