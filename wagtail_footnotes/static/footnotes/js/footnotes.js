@@ -1,12 +1,15 @@
+// Number of UUID characters shown in the editor and chooser table.
+// Also used by the display-value div rendered by ReadonlyUUIDInput.
+const UUID_SHORT_LENGTH = 6;
+
 function setUUID(id) {
   const input = document.getElementById(id);
+  if (!input || input.value) return;
+  const uuid = crypto.randomUUID();
+  input.value = uuid;
   const displayValue = document.getElementById(`${id}_display-value`);
-  if (input && !input.value) {
-    const uuid = crypto.randomUUID();
-    input.value = uuid;
-    if (displayValue) {
-      displayValue.textContent = uuid.substring(0, 6);
-    }
+  if (displayValue) {
+    displayValue.textContent = uuid.substring(0, UUID_SHORT_LENGTH);
   }
 }
 
@@ -54,7 +57,7 @@ class FootnoteSource extends React.Component {
 
           // The short key is the first 6 chars of the UUID — used as visible text
           // in the editor. On the published page this is replaced by a numbered ref.
-          const shortKey = uuid.substring(0, 6);
+          const shortKey = uuid.substring(0, UUID_SHORT_LENGTH);
           const newContent = Modifier.replaceText(
             content,
             selection,
@@ -120,7 +123,7 @@ class FootnoteSource extends React.Component {
 
             const displayDiv = document.getElementById(expectedDisplayId);
             if (displayDiv) {
-              displayDiv.textContent = uuid.substring(0, 6);
+              displayDiv.textContent = uuid.substring(0, UUID_SHORT_LENGTH);
             }
 
             // Scroll to the new row and focus its Draftail editor. Deferred because
@@ -170,7 +173,7 @@ class FootnoteSource extends React.Component {
           // Build the row using DOM methods rather than HTML string concatenation
           // to avoid injection issues with footnote text content.
           const row = $("<tr>").attr("data-uuid", uuid).css({ cursor: "pointer" });
-          row.append($("<td>").text(text), $("<td>").text(uuid.substring(0, 6)));
+          row.append($("<td>").text(text), $("<td>").text(uuid.substring(0, UUID_SHORT_LENGTH)));
           table.append(row);
 
           row.on("click", function () {
