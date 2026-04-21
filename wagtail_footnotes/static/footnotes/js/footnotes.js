@@ -267,31 +267,30 @@ document.addEventListener("DOMContentLoaded", function () {
     container.className = "footnote-back-links";
 
     if (refs.length === 1) {
-      // Single reference — one plain "↑" link
-      const link = document.createElement("a");
-      link.href = "#";
-      link.textContent = "↑ Go to reference";
-      link.addEventListener("click", function (e) {
-        e.preventDefault();
+      // Single reference — one plain button
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "footnote-back-link";
+      btn.textContent = "↑ Go to reference";
+      btn.addEventListener("click", function () {
         refs[0].scrollIntoView({ behavior: "smooth", block: "center" });
       });
-      container.appendChild(link);
+      container.appendChild(btn);
     } else {
-      // Multiple references — "↑ " label followed by numbered links "1 2 3 …"
-      const label = document.createTextNode("↑ Go to reference: ");
-      container.appendChild(label);
+      // Multiple references — "↑ " label followed by numbered buttons "1 2 3 …"
+      container.appendChild(document.createTextNode("↑ Go to reference: "));
 
       refs.forEach(function (ref, i) {
-        const link = document.createElement("a");
-        link.href = "#";
-        link.textContent = String(i + 1);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "footnote-back-link";
+        btn.textContent = String(i + 1);
         // Capture ref in loop-local variable to avoid closure issues
         const targetRef = ref;
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
+        btn.addEventListener("click", function () {
           targetRef.scrollIntoView({ behavior: "smooth", block: "center" });
         });
-        container.appendChild(link);
+        container.appendChild(btn);
       });
     }
 
