@@ -225,6 +225,26 @@ class TestFunctional(TestCase):
         self.assertIn('href="#footnote-source-1-2"', footnotes_string)
         self.assertIn("Cross-block footnote", footnotes_string)
 
+    def test_footnotes_modal_contains_create_button(self):
+        """The footnote chooser modal renders the 'Create new footnote' button."""
+        response = self.client.get("/footnotes/footnotes_modal/")
+        self.assertEqual(response.status_code, 200)
+
+        soup = bs4(response.content, "html.parser")
+
+        # The button must be present and targetable by the JS via its id
+        create_btn = soup.find("button", {"id": "footnotes-create-new"})
+        self.assertIsNotNone(create_btn)
+        self.assertIn("Create new footnote", create_btn.text)
+
+    def test_footnotes_modal_no_longer_instructs_manual_scroll(self):
+        """The old 'close this window and scroll down' instruction has been removed."""
+        response = self.client.get("/footnotes/footnotes_modal/")
+        self.assertEqual(response.status_code, 200)
+
+        # Regression guard: this copy was removed when the button was added
+        self.assertNotContains(response, "close this window")
+
     def test_edit_page_with_footnote(self):
         self.client.force_login(self.admin_user)
 
