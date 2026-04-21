@@ -37,7 +37,12 @@ class FootnoteSource extends React.Component {
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
 
-    $(document.body).on("hidden.bs.modal", this.onClose);
+    // Keep a reference to the bound handler so we can remove it selectively.
+    // When the user clicks "Create new footnote" we detach this before hiding the
+    // modal — otherwise the hide event would fire onClose(), which cancels the
+    // Draftail operation before we've had a chance to call onComplete().
+    const modalCloseHandler = this.onClose;
+    $(document.body).on("hidden.bs.modal", modalCloseHandler);
 
     $("body > .modal").remove();
 
@@ -85,7 +90,10 @@ class FootnoteSource extends React.Component {
         // new footnote row, scrolls the footnotes section into view, then waits
         // for the new row's UUID to be populated before inserting the entity.
         $("#footnotes-create-new").on("click", function () {
-          // Hide the modal before doing anything else so the user can see the panel
+          // Detach the modal-close handler BEFORE hiding the modal. If we don't,
+          // Bootstrap fires "hidden.bs.modal" which calls onClose(), and that
+          // cancels the Draftail operation before onComplete() has been called.
+          $(document.body).off("hidden.bs.modal", modalCloseHandler);
           $("#footnotes-modal").modal("hide");
 
           // The inline panel "Add" button — standard Wagtail inline panel selector
@@ -103,44 +111,50 @@ class FootnoteSource extends React.Component {
             footnotesSection.scrollIntoView({ behavior: "smooth" });
           }
 
-          // Watch for the new inline panel row to be added to the DOM.
-          // We can't use setTimeout here because the render time is unpredictable —
-          // MutationObserver lets us react precisely when the new row appears.
           const formsContainer = document.querySelector("#id_footnotes-FORMS");
           if (!formsContainer) return;
 
-          const rowObserver = new MutationObserver(function (mutations, rowObs) {
-            for (const mutation of mutations) {
-              for (const node of mutation.addedNodes) {
-                // Only interested in element nodes (not text nodes etc.)
-                if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          // Snapshot which UUID display divs already exist so we can identify the
+          // newly added one. setUUID() populates these divs; a new one with content
+          // means a new footnote row has been initialised and is ready to reference.
+          const existingDisplayDivIds = new Set(
+            Array.from(
+              document.querySelectorAll("div[id*='-uuid_display-value']")
+            ).map((el) => el.id)
+          );
 
-                // The UUID display div is populated by setUUID() once the new row
-                // is initialised. Find it within the newly added panel row.
-                const displayDiv = node.querySelector('div[id$="_display-value"]');
-                if (!displayDiv) continue;
+          // Watch the entire forms container (subtree) for any DOM changes.
+          // We need subtree:true because the new panel row may be nested inside
+          // a wrapper element rather than being a direct child of formsContainer.
+          const observer = new MutationObserver(function (mutations, obs) {
+            // After each batch of mutations, check whether a new display div has
+            // appeared AND been populated by setUUID(). Both conditions must be
+            // true — the div is added empty first, then populated on the next tick
+            // by the Stimulus read-only-uuid controller.
+            const allDisplayDivs = document.querySelectorAll(
+              "div[id*='-uuid_display-value']"
+            );
+            for (const div of allDisplayDivs) {
+              if (existingDisplayDivIds.has(div.id)) continue; // pre-existing
+              if (!div.textContent.trim()) continue; // not yet populated
 
-                // Stop watching for new rows — we found the one we want
-                rowObs.disconnect();
+              // Found a new, populated display div. Derive the hidden input's ID
+              // by stripping "_display-value" from the div's id, then read the UUID.
+              const inputId = div.id.replace("_display-value", "");
+              const uuidInput = document.getElementById(inputId);
+              if (!uuidInput || !uuidInput.value) continue;
 
-                // Now watch the display div for its content being set by setUUID().
-                // setUUID() calls $displayValue.html(...), which triggers a childList
-                // mutation. We use this as the signal that the UUID is ready.
-                const uuidObserver = new MutationObserver(function (_, uuidObs) {
-                  const uuidInput = node.querySelector('input[id*="-uuid"]');
-                  if (!uuidInput || !uuidInput.value) return;
-
-                  // UUID is ready — stop observing and insert the entity
-                  uuidObs.disconnect();
-                  insertFootnoteEntity(uuidInput.value);
-                });
-
-                uuidObserver.observe(displayDiv, { childList: true });
-              }
+              // Stop observing — we have what we need
+              obs.disconnect();
+              insertFootnoteEntity(uuidInput.value);
+              return;
             }
           });
 
-          rowObserver.observe(formsContainer, { childList: true });
+          observer.observe(formsContainer, {
+            childList: true,
+            subtree: true,
+          });
         });
 
         // --- Existing footnote rows: build the chooser table ---
