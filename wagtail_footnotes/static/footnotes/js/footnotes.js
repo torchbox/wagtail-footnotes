@@ -234,9 +234,7 @@ const Footnote = (props) => {
     {
       "data-footnote-uuid": uuid,
       onClick: handleClick,
-      // Use Wagtail's link colour token so the reference looks like a link in
-      // the editor, consistent with the admin theme.
-      style: { cursor: "pointer", color: "var(--w-color-text-link-default)", textDecoration: "underline" },
+      className: "footnote-ref-sup",
       title: "Go to footnote",
     },
     props.children
@@ -267,14 +265,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const container = document.createElement("div");
     container.className = "footnote-back-links";
-    container.style.cssText = "margin-top: 4px; font-size: 0.85em;";
 
     if (refs.length === 1) {
       // Single reference — one plain "↑" link
       const link = document.createElement("a");
       link.href = "#";
       link.textContent = "↑ Go to reference";
-      link.style.cssText = "cursor: pointer;";
       link.addEventListener("click", function (e) {
         e.preventDefault();
         refs[0].scrollIntoView({ behavior: "smooth", block: "center" });
@@ -289,7 +285,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const link = document.createElement("a");
         link.href = "#";
         link.textContent = String(i + 1);
-        link.style.cssText = "cursor: pointer; margin-right: 4px;";
         // Capture ref in loop-local variable to avoid closure issues
         const targetRef = ref;
         link.addEventListener("click", function (e) {

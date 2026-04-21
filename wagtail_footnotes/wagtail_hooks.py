@@ -25,6 +25,7 @@ def register_footnotes_feature(features):
         draftail_features.EntityFeature(
             control,
             js=["wagtailadmin/js/draftail.js", "footnotes/js/footnotes.js"],
+            css={"all": ["footnotes/css/footnotes-admin.css"]},
         ),
     )
 
