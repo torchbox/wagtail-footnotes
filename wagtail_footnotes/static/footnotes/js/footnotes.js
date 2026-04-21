@@ -37,10 +37,7 @@ class FootnoteSource extends React.Component {
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
 
-    // Keep a reference to the bound handler so we can remove it selectively.
-    // When the user clicks "Create new footnote" we detach this before hiding the
-    // modal — otherwise the hide event would fire onClose(), which cancels the
-    // Draftail operation before we've had a chance to call onComplete().
+    // Keep a named reference so we can remove this specific handler when needed.
     const modalCloseHandler = this.onClose;
     $(document.body).on("hidden.bs.modal", modalCloseHandler);
 
@@ -86,24 +83,44 @@ class FootnoteSource extends React.Component {
         }
 
         // --- "Create new footnote" button handler ---
-        // Closes the modal, triggers the inline panel's "Add" button to create a
-        // new footnote row, scrolls the footnotes section into view, then waits
-        // for the new row's UUID to be populated before inserting the entity.
+        //
+        // Strategy: generate the UUID up front and insert the entity immediately
+        // (while FootnoteSource is definitely still mounted), then asynchronously
+        // wire up the new inline panel form row to use that same UUID.
+        //
+        // We can't do it the other way round (wait for the form row, read its UUID,
+        // then insert the entity) because Draftail may unmount FootnoteSource at any
+        // point after the modal closes, making onComplete() unreliable to call later.
         $("#footnotes-create-new").on("click", function () {
-          // Detach the modal-close handler BEFORE hiding the modal. If we don't,
-          // Bootstrap fires "hidden.bs.modal" which calls onClose(), and that
-          // cancels the Draftail operation before onComplete() has been called.
+          // Generate the UUID now so we control it from the start
+          const uuid = uuidv4();
+
+          // Read the current total form count BEFORE clicking add — the new form
+          // row will be assigned this index by Django's formset machinery.
+          const totalFormsInput = document.getElementById(
+            "id_footnotes-TOTAL_FORMS"
+          );
+          const newFormIndex = totalFormsInput
+            ? parseInt(totalFormsInput.value, 10)
+            : 0;
+
+          // Insert the entity into the rich text editor right now, while
+          // FootnoteSource is still mounted and onComplete() is safe to call.
+          insertFootnoteEntity(uuid);
+
+          // Remove the modal close handler before hiding so it doesn't fire
+          // onClose() on the (now unmounting) component and cause a double-call.
           $(document.body).off("hidden.bs.modal", modalCloseHandler);
           $("#footnotes-modal").modal("hide");
 
-          // The inline panel "Add" button — standard Wagtail inline panel selector
+          // Click the inline panel "Add" button to create a new form row.
+          // Standard Wagtail inline panel selector.
           const addButton = document.querySelector("#id_footnotes-ADD");
           if (!addButton) return;
           addButton.click();
 
-          // Scroll the footnotes inline panel section into view.
-          // The panel section ID follows Wagtail's naming convention for InlinePanel
-          // fields defined inside the page's content_panels.
+          // Scroll the footnotes panel into view so the user can fill in the text.
+          // The section ID follows Wagtail's InlinePanel naming convention.
           const footnotesSection = document.querySelector(
             "#panel-child-content-footnotes-section"
           );
@@ -111,50 +128,36 @@ class FootnoteSource extends React.Component {
             footnotesSection.scrollIntoView({ behavior: "smooth" });
           }
 
-          const formsContainer = document.querySelector("#id_footnotes-FORMS");
-          if (!formsContainer) return;
+          // Watch for the new form row's UUID input to appear in the DOM, then
+          // set it to our pre-generated UUID. We know the exact ID because Django
+          // formsets use a predictable index (the old TOTAL_FORMS value).
+          //
+          // We observe document.body (not just the forms container) to avoid
+          // missing the element if Wagtail nests the new row inside wrapper elements.
+          const expectedInputId = `id_footnotes-${newFormIndex}-uuid`;
+          const expectedDisplayId = `${expectedInputId}_display-value`;
 
-          // Snapshot which UUID display divs already exist so we can identify the
-          // newly added one. setUUID() populates these divs; a new one with content
-          // means a new footnote row has been initialised and is ready to reference.
-          const existingDisplayDivIds = new Set(
-            Array.from(
-              document.querySelectorAll("div[id*='-uuid_display-value']")
-            ).map((el) => el.id)
-          );
-
-          // Watch the entire forms container (subtree) for any DOM changes.
-          // We need subtree:true because the new panel row may be nested inside
-          // a wrapper element rather than being a direct child of formsContainer.
           const observer = new MutationObserver(function (mutations, obs) {
-            // After each batch of mutations, check whether a new display div has
-            // appeared AND been populated by setUUID(). Both conditions must be
-            // true — the div is added empty first, then populated on the next tick
-            // by the Stimulus read-only-uuid controller.
-            const allDisplayDivs = document.querySelectorAll(
-              "div[id*='-uuid_display-value']"
-            );
-            for (const div of allDisplayDivs) {
-              if (existingDisplayDivIds.has(div.id)) continue; // pre-existing
-              if (!div.textContent.trim()) continue; // not yet populated
+            const uuidInput = document.getElementById(expectedInputId);
+            if (!uuidInput) return; // row not in DOM yet — keep watching
 
-              // Found a new, populated display div. Derive the hidden input's ID
-              // by stripping "_display-value" from the div's id, then read the UUID.
-              const inputId = div.id.replace("_display-value", "");
-              const uuidInput = document.getElementById(inputId);
-              if (!uuidInput || !uuidInput.value) continue;
+            // Found the input — stop observing immediately
+            obs.disconnect();
 
-              // Stop observing — we have what we need
-              obs.disconnect();
-              insertFootnoteEntity(uuidInput.value);
-              return;
+            // Set our UUID on the hidden input. If setUUID() hasn't run yet,
+            // it will see a non-empty value and skip generating its own UUID.
+            // If setUUID() already ran (and generated a different UUID), we
+            // overwrite it so the form row matches the entity we already inserted.
+            uuidInput.value = uuid;
+
+            // Also update the display div so what the user sees matches
+            const displayDiv = document.getElementById(expectedDisplayId);
+            if (displayDiv) {
+              displayDiv.textContent = uuid.substring(0, 6);
             }
           });
 
-          observer.observe(formsContainer, {
-            childList: true,
-            subtree: true,
-          });
+          observer.observe(document.body, { childList: true, subtree: true });
         });
 
         // --- Existing footnote rows: build the chooser table ---
