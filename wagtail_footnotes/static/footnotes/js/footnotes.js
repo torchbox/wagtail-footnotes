@@ -266,31 +266,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const container = document.createElement("div");
     container.className = "footnote-back-links";
 
-    if (refs.length === 1) {
-      // Single reference — one plain button
+    if (refs.length > 1) {
+      container.appendChild(document.createTextNode("↑ Go to reference: "));
+    }
+
+    refs.forEach(function (ref, i) {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "footnote-back-link";
-      btn.textContent = "↑ Go to reference";
+      btn.textContent = refs.length > 1 ? i + 1 : "↑ Go to reference";
       btn.addEventListener("click", function () {
-        refs[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        ref.scrollIntoView({ behavior: "smooth", block: "center" });
       });
       container.appendChild(btn);
-    } else {
-      // Multiple references — "↑ " label followed by numbered buttons "1 2 3 …"
-      container.appendChild(document.createTextNode("↑ Go to reference: "));
-
-      refs.forEach(function (ref, i) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "footnote-back-link";
-        btn.textContent = i + 1;
-        btn.addEventListener("click", function () {
-          ref.scrollIntoView({ behavior: "smooth", block: "center" });
-        });
-        container.appendChild(btn);
-      });
-    }
+    });
 
     // Insert immediately after the UUID display div so the back-link sits just
     // below the footnote's ID — the most natural place to see "where is this used".
