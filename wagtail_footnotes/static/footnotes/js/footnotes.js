@@ -285,10 +285,8 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.type = "button";
         btn.className = "footnote-back-link";
         btn.textContent = i + 1;
-        // Capture ref in loop-local variable to avoid closure issues
-        const targetRef = ref;
         btn.addEventListener("click", function () {
-          targetRef.scrollIntoView({ behavior: "smooth", block: "center" });
+          ref.scrollIntoView({ behavior: "smooth", block: "center" });
         });
         container.appendChild(btn);
       });
