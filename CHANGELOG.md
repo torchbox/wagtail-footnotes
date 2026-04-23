@@ -11,6 +11,10 @@
   `footnote-source-1-1`). This applies to all references, including single ones. Sites that target
   these IDs in CSS, JavaScript, or tests will need to update their selectors.
 
+- Add "Create new footnote" button to the footnote chooser modal (https://github.com/torchbox/wagtail-footnotes/pull/92)
+- Add back-links in footnote panels that navigate to the corresponding in-text reference(s), enabling bi-directional navigation between the editor and footnotes (https://github.com/torchbox/wagtail-footnotes/pull/92)
+- Move inline styles to external CSS file to avoid Content Security Policy issues (https://github.com/torchbox/wagtail-footnotes/pull/92)
+- Use semantic `<button>` elements for back-links instead of `<a href="#">` (https://github.com/torchbox/wagtail-footnotes/pull/92)
 - Remove support for Wagtail 6.4 and 7.1, Python < 3.10, Django 5.1
 - Update tox testing to include Wagtail 7.2 and 7.3, Django 6.0
 - Include Python 3.14 in testing
