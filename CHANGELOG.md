@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Drop support for Wagtail 6.3 (EOL May 2026) and Wagtail 7.2 (EOL May 2026)
+- Add support for Wagtail 7.4 LTS
+- Update tox matrix to test Wagtail 7.0, 7.3, and 7.4
+
 ## 0.15.0
 
 - Add support for multiple references to the same footnote (https://github.com/torchbox/wagtail-footnotes/pull/90) @jsma
