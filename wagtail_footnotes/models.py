@@ -31,7 +31,7 @@ class Footnote(TranslatableMixin, Orderable):
         )
     )
 
-    panels: ClassVar[list] = [
+    panels: ClassVar[list[FieldPanel]] = [
         FieldPanel("text"),
         FieldPanel("uuid", widget=ReadonlyUUIDInput),
     ]
