@@ -49,8 +49,17 @@ class RichTextBlockWithFootnotes(RichTextBlock):
         if "footnotes" not in self.features:
             self.features.append("footnotes")
 
+    # RichTextBlock creates RichText values in three places: when loading from the database (to_python), from
+    # submitted form data such as page previews (value_from_form), and from values set in Python (normalize).
+    # All three need to return RichTextWithFootnotes, or footnotes would only be replaced on some of those paths.
     def to_python(self, value):
         return RichTextWithFootnotes(super().to_python(value).source, self)
+
+    def value_from_form(self, value):
+        return RichTextWithFootnotes(super().value_from_form(value).source, self)
+
+    def normalize(self, value):
+        return RichTextWithFootnotes(super().normalize(value).source, self)
 
     def render_footnote_tag(self, index: int, reference_index: int):
         template_name = getattr(
