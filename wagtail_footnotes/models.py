@@ -37,7 +37,7 @@ class Footnote(TranslatableMixin, Orderable):
     ]
 
     class Meta(TranslatableMixin.Meta, Orderable.Meta):
-        unique_together: ClassVar[list] = [
+        unique_together: ClassVar[list[tuple[str, str]]] = [
             ("page", "uuid"),
             ("translation_key", "locale"),
         ]
