@@ -1,6 +1,7 @@
 import json
 import uuid as uuid_module
 
+from django.template import Context, Template
 from django.test import TestCase, override_settings
 from wagtail import blocks
 from wagtail.fields import StreamBlock
@@ -262,3 +263,64 @@ class TestBlocks(TestCase):
             out_block2,
             '<p>Block 2 <a href="#footnote-1" id="footnote-source-1-2"><sup>[1]</sup></a></p>',
         )
+
+
+class CaptionBlock(blocks.StructBlock):
+    caption = RichTextBlockWithFootnotes()
+
+
+class TestBlockInStructBlock(TestCase):
+    """
+    RichTextBlockWithFootnotes used as a StructBlock child.
+
+    StructBlock templates render their children themselves, so the footnote
+    replacement in RichTextBlockWithFootnotes.render() only runs if the child
+    value routes back through its block.
+    """
+
+    def setUp(self):
+        home_page = Page.objects.get(title="Welcome to your new Wagtail site!")
+        uuid = "8b9c2d4e-1f3a-4b5c-9d6e-7f8a9b0c1d2e"
+        self.page = TestPageStreamField(
+            title="Test Page Struct Block",
+            slug="test-page-struct-block",
+            body=json.dumps([{"type": "paragraph", "value": "<p>Body</p>"}]),
+        )
+        home_page.add_child(instance=self.page)
+        self.footnote = Footnote.objects.create(
+            page=self.page, uuid=uuid, text="Struct footnote"
+        )
+        self.caption_html = (
+            f'<p>Caption <footnote id="{uuid}">[{uuid[:6]}]</footnote></p>'
+        )
+        self.value = CaptionBlock().to_python({"caption": self.caption_html})
+
+    def render(self, template_string):
+        # Mimics a StructBlock template, which has the page and the struct value in context
+        template = Template("{% load wagtailcore_tags %}" + template_string)
+        return template.render(Context({"page": self.page, "value": self.value}))
+
+    def test_include_block_on_child_value_replaces_footnote(self):
+        out = self.render("{% include_block value.caption %}")
+        self.assertHTMLEqual(
+            out,
+            '<p>Caption <a href="#footnote-1" id="footnote-source-1-1"><sup>[1]</sup></a></p>',
+        )
+
+    def test_include_block_on_child_value_adds_footnote_to_page_list(self):
+        self.render("{% include_block value.caption %}")
+        # footnotes_list is only created once the block's render() runs
+        self.assertEqual(getattr(self.page, "footnotes_list", []), [self.footnote])
+
+    def test_include_block_on_bound_block_replaces_footnote(self):
+        out = self.render("{% include_block value.bound_blocks.caption %}")
+        self.assertHTMLEqual(
+            out,
+            '<p>Caption <a href="#footnote-1" id="footnote-source-1-1"><sup>[1]</sup></a></p>',
+        )
+
+    def test_richtext_filter_on_child_value_still_renders(self):
+        # The richtext filter has no access to the block, so footnotes can't be
+        # replaced here, but the value must still render rather than raise
+        out = self.render("{{ value.caption|richtext }}")
+        self.assertIn("<p>Caption ", out)
