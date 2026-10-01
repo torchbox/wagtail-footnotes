@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -29,10 +31,16 @@ class Footnote(TranslatableMixin, Orderable):
         )
     )
 
-    panels = [FieldPanel("text"), FieldPanel("uuid", widget=ReadonlyUUIDInput)]
+    panels: ClassVar[list] = [
+        FieldPanel("text"),
+        FieldPanel("uuid", widget=ReadonlyUUIDInput),
+    ]
 
     class Meta(TranslatableMixin.Meta, Orderable.Meta):
-        unique_together = [("page", "uuid"), ("translation_key", "locale")]
+        unique_together: ClassVar[list] = [
+            ("page", "uuid"),
+            ("translation_key", "locale"),
+        ]
 
     def __str__(self):
         return str(self.uuid)
