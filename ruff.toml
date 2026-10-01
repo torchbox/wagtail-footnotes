@@ -23,6 +23,11 @@ extend-ignore = [
 ]
 fixable = ["C4", "E", "F", "I", "UP"]
 
+[lint.per-file-ignores]
+# Django-generated migration files use mutable class attributes such as dependencies
+# and operations, which Ruff's RUF012 rule flags when they aren't annotated with ClassVar.
+"**/migrations/*" = ["RUF012"]
+
 [lint.isort]
 known-first-party = ["wagtail_footnotes"]
 lines-between-types = 1
