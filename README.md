@@ -103,6 +103,15 @@ class MyPage(Page):
     )
 ```
 
+If you use `RichTextBlockWithFootnotes` inside a `StructBlock` with its own template, render it with `{% include_block %}` so its footnotes are replaced:
+
+```django
+{% load wagtailcore_tags %}
+{% include_block value.caption %}
+```
+
+Don't use the `|richtext` filter (e.g. `{{ value.caption|richtext }}`) for these values. It doesn't have access to the page, so footnotes rendered with it aren't numbered or added to the footnotes list, and the raw `<footnote>` markup is output instead. The same applies to a `StructBlock` without a template, which renders its children directly.
+
 ### Adding footnotes as a global default
 
 You might want to simply have all RichText editors display footnotes. But remember that you will need the footnotes `InlinePanel` added
