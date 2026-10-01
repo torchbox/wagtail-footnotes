@@ -290,3 +290,40 @@ class TestFunctional(TestCase):
 
         # Test that the footnote uuid is present in the html
         self.assertIn(self.footnote.uuid, str(soup))
+
+
+class TestFootnoteInStructBlock(TestCase):
+    """A footnote in a StructBlock's caption, rendered by the block's own template."""
+
+    def setUp(self):
+        home_page = Page.objects.get(title="Welcome to your new Wagtail site!")
+        uuid = "3c4d5e6f-7a8b-4c9d-8e0f-1a2b3c4d5e6f"
+        self.page = TestPageStreamField(
+            title="Test Page Struct Block Footnote",
+            slug="test-page-struct-block-footnote",
+            body=json.dumps(
+                [
+                    {
+                        "type": "caption_include_block",
+                        "value": {
+                            "caption": f'<p>A caption <footnote id="{uuid}">[{uuid[:6]}]</footnote></p>'
+                        },
+                    }
+                ]
+            ),
+        )
+        home_page.add_child(instance=self.page)
+        self.page.save_revision().publish()
+        Footnote.objects.create(page=self.page, uuid=uuid, text="Caption footnote")
+
+    def test_footnote_in_struct_block_is_replaced_and_listed(self):
+        response = self.client.get("/test-page-struct-block-footnote/")
+        soup = bs4(response.content, "html.parser")
+
+        caption = soup.find("figure", {"class": "caption-include-block"})
+        self.assertIsNone(caption.find("footnote"))
+        self.assertTrue(caption.find("a", {"id": "footnote-source-1-1"}))
+
+        footnotes = soup.find("div", {"class": "footnotes"})
+        self.assertIsNotNone(footnotes)
+        self.assertIn("Caption footnote", str(footnotes))

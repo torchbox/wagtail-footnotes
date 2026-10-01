@@ -5,6 +5,13 @@
 - Drop support for Wagtail 6.3 (EOL May 2026) and Wagtail 7.2 (EOL May 2026)
 - Add support for Wagtail 7.4 LTS
 - Update tox matrix to test Wagtail 7.0, 7.3, and 7.4
+- Fix footnotes not being replaced when a `RichTextBlockWithFootnotes` inside a `StructBlock` is rendered with `{% include_block value.field_name %}` (https://github.com/torchbox/wagtail-footnotes/issues/22)
+
+  `RichTextBlockWithFootnotes` values are now `RichTextWithFootnotes`, a `RichText` subclass, so stored
+  content is unchanged and no migration is needed. On pages where those footnotes were previously
+  output as raw `<footnote>` markup, they are now numbered and added to the footnotes list. Footnotes
+  later on the same page may move up a number, so links to `#footnote-{N}` on those pages may point to
+  a different footnote. The `|richtext` filter still can't replace footnotes; see the README.
 
 ## 0.15.0
 

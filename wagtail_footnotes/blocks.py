@@ -5,11 +5,30 @@ from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from wagtail.blocks import RichTextBlock
 from wagtail.models import Page
+from wagtail.rich_text import RichText
 
 from wagtail_footnotes.models import Footnote
 
 
 FIND_FOOTNOTE_TAG = re.compile(r'<footnote id="(.*?)">.*?</footnote>')
+
+
+class RichTextWithFootnotes(RichText):
+    """
+    The value type of RichTextBlockWithFootnotes: a RichText that keeps a reference to its block.
+
+    `{% include_block %}` only renders a value through its block if the value has a `render_as_block()` method.
+    Without one, a value rendered directly (e.g. `{% include_block value.caption %}` in a StructBlock template)
+    would skip RichTextBlockWithFootnotes.render(), and its footnote tags would never be replaced.
+    Subclassing RichText keeps the `|richtext` filter and everything that reads `value.source` working as before.
+    """
+
+    def __init__(self, source, block):
+        super().__init__(source)
+        self.block = block
+
+    def render_as_block(self, context=None):
+        return self.block.render(self, context=context)
 
 
 class RichTextBlockWithFootnotes(RichTextBlock):
@@ -29,6 +48,18 @@ class RichTextBlockWithFootnotes(RichTextBlock):
             self.features = []
         if "footnotes" not in self.features:
             self.features.append("footnotes")
+
+    # RichTextBlock creates RichText values in three places: when loading from the database (to_python), from
+    # submitted form data such as page previews (value_from_form), and from values set in Python (normalize).
+    # All three need to return RichTextWithFootnotes, or footnotes would only be replaced on some of those paths.
+    def to_python(self, value):
+        return RichTextWithFootnotes(super().to_python(value).source, self)
+
+    def value_from_form(self, value):
+        return RichTextWithFootnotes(super().value_from_form(value).source, self)
+
+    def normalize(self, value):
+        return RichTextWithFootnotes(super().normalize(value).source, self)
 
     def render_footnote_tag(self, index: int, reference_index: int):
         template_name = getattr(
