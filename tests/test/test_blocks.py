@@ -295,10 +295,11 @@ class TestBlockInStructBlock(TestCase):
         )
         self.value = CaptionBlock().to_python({"caption": self.caption_html})
 
-    def render(self, template_string):
+    def render(self, template_string, value=None):
         # Mimics a StructBlock template, which has the page and the struct value in context
         template = Template("{% load wagtailcore_tags %}" + template_string)
-        return template.render(Context({"page": self.page, "value": self.value}))
+        context = {"page": self.page, "value": value or self.value}
+        return template.render(Context(context))
 
     def test_include_block_on_child_value_replaces_footnote(self):
         out = self.render("{% include_block value.caption %}")
@@ -324,3 +325,23 @@ class TestBlockInStructBlock(TestCase):
         # replaced here, but the value must still render rather than raise
         out = self.render("{{ value.caption|richtext }}")
         self.assertIn("<p>Caption ", out)
+
+    def test_include_block_on_child_value_from_form_replaces_footnote(self):
+        # Page previews build block values from submitted form data
+        block = CaptionBlock()
+        caption = block.child_blocks["caption"].value_from_form(self.caption_html)
+        value = blocks.StructValue(block, [("caption", caption)])
+        out = self.render("{% include_block value.caption %}", value=value)
+        self.assertHTMLEqual(
+            out,
+            '<p>Caption <a href="#footnote-1" id="footnote-source-1-1"><sup>[1]</sup></a></p>',
+        )
+
+    def test_include_block_on_normalized_child_value_replaces_footnote(self):
+        # normalize() is used when block values are assigned from Python
+        value = CaptionBlock().normalize({"caption": self.caption_html})
+        out = self.render("{% include_block value.caption %}", value=value)
+        self.assertHTMLEqual(
+            out,
+            '<p>Caption <a href="#footnote-1" id="footnote-source-1-1"><sup>[1]</sup></a></p>',
+        )
