@@ -79,7 +79,6 @@ class InformationPage(Page):
             "footnotes",  # Make sure this line is part of the features
         ],
     )
-
 ```
 
 [See Wagtail's documentation](https://docs.wagtail.org/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field) for a list of features that you may want to configure since we are overwriting the defaults.
@@ -92,11 +91,13 @@ In order to have footnotes available in a `RichTextBlock`, you will need to chan
 from wagtail_footnotes.blocks import RichTextBlockWithFootnotes
 # ...
 
+
 class MyPage(Page):
     body = StreamField(
         [
             # ...
-            ("paragraph", RichTextBlockWithFootnotes()),  # Using RichTextBlockWithFootnotes
+            # Using RichTextBlockWithFootnotes
+            ("paragraph", RichTextBlockWithFootnotes()),
             # ...
         ],
     )
@@ -113,7 +114,9 @@ on all your Page models for the footnotes functionality to be enabled.
 WAGTAILADMIN_RICH_TEXT_EDITORS = {
     "default": {
         "WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea",
-        "OPTIONS": {"features": ["bold", "italic", "h3", "h4", "ol", "ul", "link", "footnotes"]},
+        "OPTIONS": {
+            "features": ["bold", "italic", "h3", "h4", "ol", "ul", "link", "footnotes"]
+        },
     }
 }
 ```
